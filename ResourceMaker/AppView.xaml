@@ -8,6 +8,7 @@
       <ColumnDefinition Width="*" />
     </Grid.ColumnDefinitions>
     <ContentControl Name="ColorModel" Margin="10" />
-    <Rectangle Grid.Column="1" Width="100" Height="100" Fill="{Binding Color}" />
-  </Grid>
+        <Rectangle Grid.Column="1" Width="100" Height="100" Fill="{Binding Color}" />
+        <Button Name="OpenWindow" Grid.Row="3">Open Window</Button>
+    </Grid>
 </UserControl>

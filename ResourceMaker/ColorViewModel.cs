@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel.Composition;
+using System.Windows;
 using Caliburn.Micro;
 using System.Windows.Media;
 
@@ -11,12 +13,16 @@ namespace ResourceMaker
   [Export(typeof(ColorViewModel))]
   public class ColorViewModel
   {
+
+      private readonly IWindowManager _windowManager;
+
     // Get the event aggregator through the constructor and store it in a field so we can publish messages later.
     private readonly IEventAggregator _events;
 
     [ImportingConstructor]
-    public ColorViewModel(IEventAggregator events)
+    public ColorViewModel(IWindowManager windowManager, IEventAggregator events)
     {
+        _windowManager = windowManager;
       _events = events;
     }
 

@@ -9,8 +9,8 @@
     <Grid.RowDefinitions>
       <RowDefinition Height="*" />
       <RowDefinition Height="*" />
-      <RowDefinition Height="*" />
-    </Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
     <RadioButton Name="Red" Content="Red" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" />
     <RadioButton Name="Green" Content="Green" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" />
     <RadioButton Name="Blue" Content="Blue" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2" />
