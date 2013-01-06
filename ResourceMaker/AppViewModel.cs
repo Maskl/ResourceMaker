@@ -5,9 +5,16 @@ using System.Windows;
 using Caliburn.Micro;
 using System.ComponentModel.Composition;
 using System.Windows.Media;
+using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace ResourceMaker
 {
+    public class Filters
+    {
+        public string Name { get; set; }
+        public string Category { get; set; }
+    }
+
     [Export(typeof(AppViewModel))]
     public class AppViewModel : PropertyChangedBase, IHandle<ColorEvent>
     {
@@ -27,6 +34,8 @@ namespace ResourceMaker
             _resourceFile.Layers.Add("Teren");
             _resourceFile.Layers.Add("Drzewa");
             _resourceFile.Layers.Add("Budynki");
+
+            _filters = new Filters();
         }
 
         public void OpenWindow()
@@ -50,6 +59,13 @@ namespace ResourceMaker
         {
             get { return _resourceFile; }
             set { _resourceFile = value; NotifyOfPropertyChange(() => ResourceFile); }
+        }
+
+        private Filters _filters;
+        public Filters Filters
+        {
+            get { return _filters; }
+            set { _filters = value; NotifyOfPropertyChange(() => Filters); }
         }
 
         public void Handle(ColorEvent message)
