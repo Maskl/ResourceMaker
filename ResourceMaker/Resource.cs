@@ -1,6 +1,6 @@
 ﻿namespace ResourceMaker
 {
-    class Resourcen
+    public class Resource
     {
         public string Name { get; set; }
     }

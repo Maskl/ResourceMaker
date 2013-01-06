@@ -8,6 +8,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <ContentControl Name="ColorModel"
                         Margin="10" />
@@ -16,6 +17,7 @@
                    Height="100"
                    Fill="{Binding Color}" />
         <Button Name="OpenWindow"
-                Grid.Row="3">Open Window</Button>
+                Grid.Row="3"
+                Content="{Binding ResourceFile.BitmapFileName}" />
     </Grid>
 </UserControl>

@@ -1,4 +1,6 @@
-﻿using System.Dynamic;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Dynamic;
 using System.Windows;
 using Caliburn.Micro;
 using System.ComponentModel.Composition;
@@ -18,6 +20,13 @@ namespace ResourceMaker
             _windowManager = windowManager;
             _eventAggregator = eventAggregator;
             eventAggregator.Subscribe(this);
+            _resourceFile = new ResourceFile();
+            _resourceFile.BitmapFileName = "bitmap.bmp";
+            _resourceFile.Layers = new ObservableCollection<string>();
+            _resourceFile.Layers.Add("Woda");
+            _resourceFile.Layers.Add("Teren");
+            _resourceFile.Layers.Add("Drzewa");
+            _resourceFile.Layers.Add("Budynki");
         }
 
         public void OpenWindow()
@@ -34,6 +43,13 @@ namespace ResourceMaker
         {
             get { return _color; }
             set { _color = value; NotifyOfPropertyChange(() => Color); }
+        }
+
+        private ResourceFile _resourceFile;
+        public ResourceFile ResourceFile
+        {
+            get { return _resourceFile; }
+            set { _resourceFile = value; NotifyOfPropertyChange(() => ResourceFile); }
         }
 
         public void Handle(ColorEvent message)
