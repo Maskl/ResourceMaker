@@ -73,14 +73,13 @@
                             ViewportUnits="Absolute"
                             Viewport="0,0,16,16" />
             </ScrollViewer.Background>
-            <Canvas>
+            <Canvas Width="{Binding ResourcesBitmap.Width}"
+                    Height="{Binding ResourcesBitmap.Height}">
                 <Image Name="ResourcesBitmap"
                        Stretch="None"
-                       HorizontalAlignment="Left"
-                       VerticalAlignment="Top"
                        cal:Message.Attach="[Event MouseDown] = [Action BitmapMouseDown($mousepoint)];
                                        [Event MouseUp] = [Action BitmapMouseUp($mousepoint)];
-                                       [Event MouseMove] = [Action BitmapMouseMove($mousepoint)]" />
+                                       [Event MouseMove] = [Action BitmapMouseMove($mousepoint)]"/>
 
                 <Border IsHitTestVisible="False"
                         Canvas.Left="{Binding NewResourceTemporary.X}"
