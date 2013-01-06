@@ -79,7 +79,7 @@
                        Stretch="None"
                        cal:Message.Attach="[Event MouseDown] = [Action BitmapMouseDown($mousepoint)];
                                        [Event MouseUp] = [Action BitmapMouseUp($mousepoint)];
-                                       [Event MouseMove] = [Action BitmapMouseMove($mousepoint)]"/>
+                                       [Event MouseMove] = [Action BitmapMouseMove($mousepoint)]" />
 
                 <Border IsHitTestVisible="False"
                         Canvas.Left="{Binding NewResourceTemporary.X}"
@@ -90,8 +90,34 @@
                         VerticalAlignment="Top"
                         BorderThickness="1px"
                         BorderBrush="#ff00ff00"
-                        Background="#3300ff00">
-                </Border>
+                        Background="#3300ff00" />
+
+                <ItemsControl ItemsSource="{Binding ResourceFile.Resources}"
+                              Grid.Row="1">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border IsHitTestVisible="False"
+                                    Width="{Binding Crop.Width}"
+                                    Height="{Binding Crop.Height}"
+                                    BorderThickness="5px"
+                                    BorderBrush="#554444ff"
+                                    Background="#334444ff" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemContainerStyle>
+                        <Style>
+                            <Setter Property="Canvas.Left"
+                                    Value="{Binding Crop.X}" />
+                            <Setter Property="Canvas.Top"
+                                    Value="{Binding Crop.Y}" />
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                </ItemsControl>
             </Canvas>
         </ScrollViewer>
 
@@ -100,7 +126,7 @@
                 Width="200"
                 Height="50">
             <Button Name="LoadBitmap">
-                Load bitmap
+                Load bitmap...
             </Button>
         </Border>
 
