@@ -30,8 +30,7 @@ namespace ResourceMaker
             _windowManager = windowManager;
             _eventAggregator = eventAggregator;
             eventAggregator.Subscribe(this);
-            IsNoBitmapLoaded = true;
-            _filters = new Filters();
+            New();
         }
 
         public void OpenWindow()
@@ -68,14 +67,19 @@ namespace ResourceMaker
                              };
         }
 
-        public void Exit()
+        public void New()
         {
-            Application.Current.Shutdown();
+            IsNoBitmapLoaded = true;
+            NewResourceStart = null;
+            NewResourceTemporary = null;
+            ResourceFile = null;
+            ResourcesBitmap = null;
+            Filters = new Filters();
         }
 
-        public void About()
+        public void Open()
         {
-            MessageBox.Show("Application by Marek Skłodowski, Poznań University of Technology 2013");
+            MessageBox.Show("Open");
         }
 
         public bool CanSave()
@@ -90,7 +94,22 @@ namespace ResourceMaker
 
         public bool CanSaveAs()
         {
-            return !IsNoBitmapLoaded;
+            return CanSave();
+        }
+
+        public void SaveAs()
+        {
+            MessageBox.Show("Save as");
+        }
+
+        public void Exit()
+        {
+            Application.Current.Shutdown();
+        }
+
+        public void About()
+        {
+            MessageBox.Show("Application by Marek Skłodowski, Poznań University of Technology 2013");
         }
 
         public void BitmapMouseDown(Point mousePosition)
@@ -130,7 +149,6 @@ namespace ResourceMaker
             var p1 = new Point(Math.Min(mousePosition.X, NewResourceStart.Value.X), Math.Min(mousePosition.Y, NewResourceStart.Value.Y));
             var p2 = new Point(Math.Max(mousePosition.X, NewResourceStart.Value.X), Math.Max(mousePosition.Y, NewResourceStart.Value.Y));
             NewResourceTemporary = new Rect(p1, p2 - p1);
-            Filters = new Filters { Name = NewResourceTemporary.ToString(), Category = NewResourceStart.ToString() };
         }
 
         private bool _isNoBitmapLoaded;
