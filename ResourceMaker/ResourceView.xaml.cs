@@ -1,8 +1,8 @@
 ﻿namespace ResourceMaker
 {
-    public partial class AppView
+    public partial class ResourceView
     {
-        public AppView()
+        public ResourceView()
         {
             InitializeComponent();
         }

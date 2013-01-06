@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Text;
+﻿using System.Dynamic;
 using System.Windows;
 using Caliburn.Micro;
 using System.ComponentModel.Composition;
@@ -10,51 +6,39 @@ using System.Windows.Media;
 
 namespace ResourceMaker
 {
-  [Export(typeof(AppViewModel))]
-  public class AppViewModel : PropertyChangedBase, IHandle<ColorEvent>
-  {
-    private SolidColorBrush _Color;
-
-      private readonly IWindowManager _windowManager;
-
-    // Get the event aggregator through the constructor and store it in a field so we can publish messages later.
-    private readonly IEventAggregator _events;
-
-    [ImportingConstructor]
-    public AppViewModel(IWindowManager windowManager, IEventAggregator events)
+    [Export(typeof(AppViewModel))]
+    public class AppViewModel : PropertyChangedBase, IHandle<ColorEvent>
     {
-        _windowManager = windowManager;
-        _events = events;
-        // Get the event aggregator through the constructor and subscribe this ColorViewModel so it can listen for ColorEvent messages.
-        events.Subscribe(this);
-    }
+        private readonly IWindowManager _windowManager;
+        private readonly IEventAggregator _eventAggregator;
 
-    // This property is for changing the color of the rectangle.
-    public SolidColorBrush Color
-    {
-      get { return _Color; }
-      set
-      {
-        _Color = value;
-        NotifyOfPropertyChange(() => Color);
-      }
-    }
+        [ImportingConstructor]
+        public AppViewModel(IWindowManager windowManager, IEventAggregator eventAggregator)
+        {
+            _windowManager = windowManager;
+            _eventAggregator = eventAggregator;
+            eventAggregator.Subscribe(this);
+        }
 
-    // This method is called after a ColorEvent message is published from somewhere else in the application.
-    public void Handle(ColorEvent message)
-    {
-      Color = message.Color;
-    }
+        public void OpenWindow()
+        {
+            dynamic settings = new ExpandoObject();
+            settings.WindowStartupLocation = WindowStartupLocation.Manual;
+            settings.WindowStyle = WindowStyle.ToolWindow;
+            settings.ShowInTaskbar = false;
+            _windowManager.ShowDialog(new ResourceViewModel(_eventAggregator), null, settings);
+        }
 
-    public void OpenWindow()
-    {
-        dynamic settings = new ExpandoObject();
-        settings.WindowStartupLocation = WindowStartupLocation.Manual;
-        settings.WindowStyle = WindowStyle.ToolWindow;
-        settings.ShowInTaskbar = false;   
+        private SolidColorBrush _color;
+        public SolidColorBrush Color
+        {
+            get { return _color; }
+            set { _color = value; NotifyOfPropertyChange(() => Color); }
+        }
 
-        _events.Publish(new ColorEvent(new SolidColorBrush(Colors.Red)));
-        _windowManager.ShowDialog(new ColorViewModel(_windowManager, _events), null, settings);
+        public void Handle(ColorEvent message)
+        {
+            Color = message.Color;
+        }
     }
-  }
 }

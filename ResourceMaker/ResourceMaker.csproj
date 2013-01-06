@@ -75,10 +75,11 @@
     </Compile>
     <Compile Include="AppViewModel.cs" />
     <Compile Include="ColorEvent.cs" />
-    <Compile Include="ColorView.xaml.cs">
-      <DependentUpon>ColorView.xaml</DependentUpon>
+    <Compile Include="Resource.cs" />
+    <Compile Include="ResourceView.xaml.cs">
+      <DependentUpon>ResourceView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ColorViewModel.cs" />
+    <Compile Include="ResourceViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -107,7 +108,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ColorView.xaml">
+    <Page Include="ResourceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
