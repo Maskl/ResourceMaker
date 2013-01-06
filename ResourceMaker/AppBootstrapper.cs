@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Windows.Input;
 using Caliburn.Micro;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
@@ -21,6 +22,15 @@ namespace ResourceMaker
             batch.AddExportedValue(_container);
 
             _container.Compose(batch);
+
+            MessageBinder.SpecialValues.Add("$mousepoint", ctx =>
+            {
+                var e = ctx.EventArgs as MouseEventArgs;
+                if (e == null)
+                    return null;
+
+                return e.GetPosition(ctx.Source);
+            });
         }
 
         protected override object GetInstance(Type serviceType, string key)

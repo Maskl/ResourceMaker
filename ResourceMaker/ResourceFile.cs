@@ -20,5 +20,9 @@ namespace ResourceMaker
         [Category("Resources")]
         [DisplayName("Layers")]
         public ObservableCollection<string> Layers { get; set; }
+
+        [Category("Resources")]
+        [DisplayName("Resources")]
+        public ObservableCollection<Resource> Resources { get; set; }
     }
 }

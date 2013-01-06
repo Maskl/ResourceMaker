@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Dynamic;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Caliburn.Micro;
 using System.ComponentModel.Composition;
@@ -62,7 +63,8 @@ namespace ResourceMaker
                              {
                                  BitmapFileName = System.IO.Path.GetFileName(uri.LocalPath),
                                  TransparentColor = Colors.Magenta,
-                                 Layers = new ObservableCollection<string>()
+                                 Layers = new ObservableCollection<string> {"Default"},
+                                 Resources = new ObservableCollection<Resource>()
                              };
         }
 
@@ -91,6 +93,46 @@ namespace ResourceMaker
             return !IsNoBitmapLoaded;
         }
 
+        public void BitmapMouseDown(Point mousePosition)
+        {
+            if (NewResourceTemporary == null)
+                NewResourceStart = mousePosition;
+        }
+
+        public void BitmapMouseUp(Point mousePosition)
+        {
+            if (!NewResourceTemporary.HasValue)
+                return;
+
+            CreateNewResource(NewResourceTemporary.Value);
+            NewResourceStart = null;
+            NewResourceTemporary = null;
+        }
+
+        private void CreateNewResource(Rect rect)
+        {
+            var res = new Resource
+                          {
+                              Name = "Unnamed",
+                              Layer = ResourceFile.Layers.Count > 0 ? ResourceFile.Layers[0] : null,
+                              Crop = rect,
+                              TransparentColor = ResourceFile.TransparentColor,
+                              ForbiddenAreas = new ObservableCollection<Rect>()
+                          };
+            ResourceFile.Resources.Add(res);
+        }
+
+        public void BitmapMouseMove(Point mousePosition)
+        {
+            if (NewResourceStart == null)
+                return;
+
+            var p1 = new Point(Math.Min(mousePosition.X, NewResourceStart.Value.X), Math.Min(mousePosition.Y, NewResourceStart.Value.Y));
+            var p2 = new Point(Math.Max(mousePosition.X, NewResourceStart.Value.X), Math.Max(mousePosition.Y, NewResourceStart.Value.Y));
+            NewResourceTemporary = new Rect(p1, p2 - p1);
+            Filters = new Filters { Name = NewResourceTemporary.ToString(), Category = NewResourceStart.ToString() };
+        }
+
         private bool _isNoBitmapLoaded;
         public bool IsNoBitmapLoaded
         {
@@ -98,11 +140,18 @@ namespace ResourceMaker
             set { _isNoBitmapLoaded = value; NotifyOfPropertyChange(() => IsNoBitmapLoaded); }
         }
 
-        private BitmapImage _resourcesBitmap;
-        public BitmapImage ResourcesBitmap
+        private Point? _newResourceStart;
+        public Point? NewResourceStart
         {
-            get { return _resourcesBitmap; }
-            set { _resourcesBitmap = value; NotifyOfPropertyChange(() => ResourcesBitmap); }
+            get { return _newResourceStart; }
+            set { _newResourceStart = value; NotifyOfPropertyChange(() => NewResourceStart); }
+        }
+
+        private Rect? _newResourceTemporary;
+        public Rect? NewResourceTemporary
+        {
+            get { return _newResourceTemporary; }
+            set { _newResourceTemporary = value; NotifyOfPropertyChange(() => NewResourceTemporary); }
         }
 
         private SolidColorBrush _color;
@@ -124,6 +173,13 @@ namespace ResourceMaker
         {
             get { return _filters; }
             set { _filters = value; NotifyOfPropertyChange(() => Filters); }
+        }
+
+        private BitmapImage _resourcesBitmap;
+        public BitmapImage ResourcesBitmap
+        {
+            get { return _resourcesBitmap; }
+            set { _resourcesBitmap = value; NotifyOfPropertyChange(() => ResourcesBitmap); }
         }
 
         public void Handle(ColorEvent message)

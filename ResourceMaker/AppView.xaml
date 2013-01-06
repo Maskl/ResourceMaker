@@ -3,6 +3,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit.PropertyGrid;assembly=WPFToolkit.Extended"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
         mc:Ignorable="d"
         x:Class="ResourceMaker.AppView"
         Width="800"
@@ -65,15 +66,34 @@
         <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto"
                       ScrollViewer.VerticalScrollBarVisibility="Auto"
                       Grid.Row="1">
-        	<ScrollViewer.Background>
+            <ScrollViewer.Background>
                 <ImageBrush ImageSource="data/background.png"
                             TileMode="Tile"
                             Stretch="None"
                             ViewportUnits="Absolute"
                             Viewport="0,0,16,16" />
-        	</ScrollViewer.Background>
-            <Image Name="ResourcesBitmap"
-                   Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            </ScrollViewer.Background>
+            <Canvas>
+                <Image Name="ResourcesBitmap"
+                       Stretch="None"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       cal:Message.Attach="[Event MouseDown] = [Action BitmapMouseDown($mousepoint)];
+                                       [Event MouseUp] = [Action BitmapMouseUp($mousepoint)];
+                                       [Event MouseMove] = [Action BitmapMouseMove($mousepoint)]" />
+
+                <Border IsHitTestVisible="False"
+                        Canvas.Left="{Binding NewResourceTemporary.X}"
+                        Canvas.Top="{Binding NewResourceTemporary.Y}"
+                        Width="{Binding NewResourceTemporary.Width}"
+                        Height="{Binding NewResourceTemporary.Height}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        BorderThickness="1px"
+                        BorderBrush="#ff00ff00"
+                        Background="#3300ff00">
+                </Border>
+            </Canvas>
         </ScrollViewer>
 
         <Border x:Name="IsNoBitmapLoaded"
