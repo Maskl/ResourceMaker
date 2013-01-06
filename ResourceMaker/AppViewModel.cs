@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Dynamic;
 using System.Windows;
+using System.Windows.Media.Imaging;
 using Caliburn.Micro;
 using System.ComponentModel.Composition;
 using System.Windows.Media;
@@ -27,14 +29,7 @@ namespace ResourceMaker
             _windowManager = windowManager;
             _eventAggregator = eventAggregator;
             eventAggregator.Subscribe(this);
-            _resourceFile = new ResourceFile();
-            _resourceFile.BitmapFileName = "bitmap.bmp";
-            _resourceFile.Layers = new ObservableCollection<string>();
-            _resourceFile.Layers.Add("Woda");
-            _resourceFile.Layers.Add("Teren");
-            _resourceFile.Layers.Add("Drzewa");
-            _resourceFile.Layers.Add("Budynki");
-
+            IsNoBitmapLoaded = true;
             _filters = new Filters();
         }
 
@@ -47,9 +42,67 @@ namespace ResourceMaker
             _windowManager.ShowDialog(new ResourceViewModel(_eventAggregator), null, settings);
         }
 
+        public void LoadBitmap()
+        {
+            var fdialog = new Microsoft.Win32.OpenFileDialog();
+            var res = fdialog.ShowDialog();
+            if (!res.Value)
+                return;
+
+            PrepareNewResourceFile(fdialog.FileName);
+        }
+
+        public void PrepareNewResourceFile(string bitmapFileName)
+        {
+            var uri = new Uri(bitmapFileName);
+            ResourcesBitmap = new BitmapImage(uri);
+            IsNoBitmapLoaded = false;
+
+            ResourceFile = new ResourceFile
+                             {
+                                 BitmapFileName = System.IO.Path.GetFileName(uri.LocalPath),
+                                 TransparentColor = Colors.Magenta,
+                                 Layers = new ObservableCollection<string>()
+                             };
+        }
+
         public void Exit()
         {
             Application.Current.Shutdown();
+        }
+
+        public void About()
+        {
+            MessageBox.Show("Application by Marek Skłodowski, Poznań University of Technology 2013");
+        }
+
+        public bool CanSave()
+        {
+            return !IsNoBitmapLoaded;
+        }
+
+        public void Save()
+        {
+            MessageBox.Show("Save");
+        }
+
+        public bool CanSaveAs()
+        {
+            return !IsNoBitmapLoaded;
+        }
+
+        private bool _isNoBitmapLoaded;
+        public bool IsNoBitmapLoaded
+        {
+            get { return _isNoBitmapLoaded; }
+            set { _isNoBitmapLoaded = value; NotifyOfPropertyChange(() => IsNoBitmapLoaded); }
+        }
+
+        private BitmapImage _resourcesBitmap;
+        public BitmapImage ResourcesBitmap
+        {
+            get { return _resourcesBitmap; }
+            set { _resourcesBitmap = value; NotifyOfPropertyChange(() => ResourcesBitmap); }
         }
 
         private SolidColorBrush _color;

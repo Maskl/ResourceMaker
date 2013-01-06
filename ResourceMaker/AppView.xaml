@@ -8,10 +8,10 @@
         Width="800"
         Height="500">
     <Grid>
-    	<Grid.RowDefinitions>
-    		<RowDefinition Height="Auto"/>
-    		<RowDefinition/>
-    	</Grid.RowDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="300" />
@@ -22,11 +22,13 @@
                         Height="55.5"
                         VerticalAlignment="Bottom"
                         Width="93.667"
-                        Grid.Column="2" Grid.Row="1" />
+                        Grid.Column="2"
+                        Grid.Row="1" />
         <Rectangle Grid.Column="1"
                    Width="100"
                    Height="100"
-                   Fill="{Binding Color}" Grid.Row="1" />
+                   Fill="{Binding Color}"
+                   Grid.Row="1" />
         <Button x:Name="OpenWindow"
                 Content="{Binding ResourceFile.BitmapFileName}"
                 HorizontalAlignment="Right"
@@ -34,9 +36,11 @@
                 VerticalAlignment="Bottom"
                 Width="109.167"
                 Grid.Column="2"
-                Margin="0,0,8,31.5" Grid.Row="1" />
+                Margin="0,0,8,31.5"
+                Grid.Row="1" />
 
-        <Grid Grid.Column="1" Grid.Row="1">
+        <Grid Grid.Column="1"
+              Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="80" />
                 <RowDefinition />
@@ -56,22 +60,48 @@
                                ShowSortOptions="False"
                                VerticalContentAlignment="Stretch" />
         </Grid>
+
+
         <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                      ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.Row="1">
-            <Image Source="5383384526_8f95038145_o.jpg"
-                   Stretch="None" />
+                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      Grid.Row="1">
+        	<ScrollViewer.Background>
+                <ImageBrush ImageSource="data/background.png"
+                            TileMode="Tile"
+                            Stretch="None"
+                            ViewportUnits="Absolute"
+                            Viewport="0,0,16,16" />
+        	</ScrollViewer.Background>
+            <Image Name="ResourcesBitmap"
+                   Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         </ScrollViewer>
+
+        <Border x:Name="IsNoBitmapLoaded"
+                Grid.Row="1"
+                Width="200"
+                Height="50">
+            <Button Name="LoadBitmap">
+                Load bitmap
+            </Button>
+        </Border>
+
         <Menu Grid.ColumnSpan="2">
-        	<MenuItem Header="File">
+            <MenuItem Header="File">
                 <MenuItem Header="New"
                           Name="New" />
                 <MenuItem Header="Open"
                           Name="Open" />
                 <MenuItem Header="Save"
                           Name="Save" />
-        		<MenuItem Header="Exit"
-                          Name="Exit"/>
-        	</MenuItem>
+                <MenuItem Header="SaveAs"
+                          Name="SaveAs" />
+                <MenuItem Header="Exit"
+                          Name="Exit" />
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="About"
+                          Name="About" />
+            </MenuItem>
         </Menu>
     </Grid>
 </Window>
