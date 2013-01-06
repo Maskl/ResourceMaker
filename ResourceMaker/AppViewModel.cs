@@ -47,6 +47,11 @@ namespace ResourceMaker
             _windowManager.ShowDialog(new ResourceViewModel(_eventAggregator), null, settings);
         }
 
+        public void Exit()
+        {
+            Application.Current.Shutdown();
+        }
+
         private SolidColorBrush _color;
         public SolidColorBrush Color
         {

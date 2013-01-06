@@ -1,41 +1,77 @@
-﻿<UserControl
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit.PropertyGrid;assembly=WPFToolkit.Extended" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d" x:Class="ResourceMaker.AppView" Width="800" Height="500"
-             >
-    <Grid
-          Background="LightBlue" ClipToBounds="True">
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit.PropertyGrid;assembly=WPFToolkit.Extended"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        mc:Ignorable="d"
+        x:Class="ResourceMaker.AppView"
+        Width="800"
+        Height="500">
+    <Grid>
+    	<Grid.RowDefinitions>
+    		<RowDefinition Height="Auto"/>
+    		<RowDefinition/>
+    	</Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="300" />
         </Grid.ColumnDefinitions>
         <ContentControl x:Name="ColorModel"
-                        Margin="27.167,0,0,8" HorizontalAlignment="Left" Height="55.5" VerticalAlignment="Bottom" Width="93.667" Grid.Column="2" />
+                        Margin="27.167,0,0,8"
+                        HorizontalAlignment="Left"
+                        Height="55.5"
+                        VerticalAlignment="Bottom"
+                        Width="93.667"
+                        Grid.Column="2" Grid.Row="1" />
         <Rectangle Grid.Column="1"
                    Width="100"
                    Height="100"
-                   Fill="{Binding Color}" />
+                   Fill="{Binding Color}" Grid.Row="1" />
         <Button x:Name="OpenWindow"
-                Content="{Binding ResourceFile.BitmapFileName}" HorizontalAlignment="Right" Height="54.5" VerticalAlignment="Bottom" Width="109.167" Grid.Column="2" Margin="0,0,8,31.5" />
+                Content="{Binding ResourceFile.BitmapFileName}"
+                HorizontalAlignment="Right"
+                Height="54.5"
+                VerticalAlignment="Bottom"
+                Width="109.167"
+                Grid.Column="2"
+                Margin="0,0,8,31.5" Grid.Row="1" />
 
-        <StackPanel Orientation="Vertical"
-                    Grid.Column="2">
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
 
-            <xctk:PropertyGrid SelectedObject="{Binding Filters}"
+            <xctk:PropertyGrid Grid.Row="0"
+                               SelectedObject="{Binding Filters}"
                                ShowSummary="False"
                                ShowSearchBox="False"
                                ShowSortOptions="False"
-                               IsCategorized="False"/>
+                               IsCategorized="False" />
 
-            <xctk:PropertyGrid SelectedObject="{Binding ResourceFile}"
+            <xctk:PropertyGrid Grid.Row="1"
+                               SelectedObject="{Binding ResourceFile}"
                                ShowSummary="False"
                                ShowSearchBox="False"
                                ShowSortOptions="False"
-                               VerticalAlignment="Stretch" Height="500"/>
-        </StackPanel>
-        <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
-        	<Image Height="500" Width="483" Source="3746217664_206baff213_o.jpg" Stretch="None"/>
+                               VerticalContentAlignment="Stretch" />
+        </Grid>
+        <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.Row="1">
+            <Image Source="5383384526_8f95038145_o.jpg"
+                   Stretch="None" />
         </ScrollViewer>
+        <Menu Grid.ColumnSpan="2">
+        	<MenuItem Header="File">
+                <MenuItem Header="New"
+                          Name="New" />
+                <MenuItem Header="Open"
+                          Name="Open" />
+                <MenuItem Header="Save"
+                          Name="Save" />
+        		<MenuItem Header="Exit"
+                          Name="Exit"/>
+        	</MenuItem>
+        </Menu>
     </Grid>
-</UserControl>
+</Window>

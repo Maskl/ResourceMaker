@@ -131,6 +131,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="3746217664_206baff213_o.jpg" />
+    <Resource Include="5383384526_8f95038145_o.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
