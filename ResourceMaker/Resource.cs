@@ -8,7 +8,7 @@ namespace ResourceMaker
     public class Resource
     {
         [Category("Main")]
-        [DisplayName("Layer")]
+        [DisplayName("Name")]
         public string Name { get; set; }
 
         [Category("Main")]
@@ -21,7 +21,7 @@ namespace ResourceMaker
 
         [Category("Main")]
         [DisplayName("Forbidden Areas")]
-        public ObservableCollection<Rect> ForbiddenAreas { get; set; }
+        public ObservableCollection<Int32Rect> ForbiddenAreas { get; set; }
 
         [Category("Transparency")]
         [DisplayName("Transparent Color")]

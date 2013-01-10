@@ -89,7 +89,7 @@
     </Compile>
     <Compile Include="AppViewModel.cs" />
     <Compile Include="ColorEvent.cs" />
-    <Compile Include="Int32ExtensionMethods.cs" />
+    <Compile Include="Int32RectExtensionMethods.cs" />
     <Compile Include="ResourceFile.cs" />
     <Compile Include="Resource.cs" />
     <Compile Include="ResourceView.xaml.cs">

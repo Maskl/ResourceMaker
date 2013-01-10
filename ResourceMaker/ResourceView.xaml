@@ -34,7 +34,48 @@
                 <Image Name="ResourceBitmap"
                        Width="{Binding RelativeSource={RelativeSource Self}, Path=Source.PixelWidth}"
                        Height="{Binding RelativeSource={RelativeSource Self}, Path=Source.PixelHeight}"
-                       Stretch="None" />
+                       cal:Message.Attach="[Event MouseDown] = [Action BitmapMouseDown($mousepoint)];
+                                       [Event MouseUp] = [Action BitmapMouseUp($mousepoint)];
+                                       [Event MouseMove] = [Action BitmapMouseMove($mousepoint)];
+                                       [Event MouseLeave] = [Action BitmapMouseLeave($mousepoint)]" />
+
+                <Border IsHitTestVisible="False"
+                        Canvas.Left="{Binding NewForbiddenAreaTemporary.X}"
+                        Canvas.Top="{Binding NewForbiddenAreaTemporary.Y}"
+                        Width="{Binding NewForbiddenAreaTemporary.Width}"
+                        Height="{Binding NewForbiddenAreaTemporary.Height}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        BorderThickness="1px"
+                        BorderBrush="#ff00ff00"
+                        Background="#3300ff00" />
+
+                <ItemsControl ItemsSource="{Binding Resource.ForbiddenAreas}"
+                              Grid.Row="1">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border IsHitTestVisible="False"
+                                    Width="{Binding Width}"
+                                    Height="{Binding Height}"
+                                    BorderThickness="1px"
+                                    BorderBrush="#ff4444ff"
+                                    Background="#334444ff" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemContainerStyle>
+                        <Style>
+                            <Setter Property="Canvas.Left"
+                                    Value="{Binding X}" />
+                            <Setter Property="Canvas.Top"
+                                    Value="{Binding Y}" />
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                </ItemsControl>
             </Canvas>
         </ScrollViewer>
     </Grid>

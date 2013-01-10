@@ -201,7 +201,7 @@ namespace ResourceMaker
                               Crop = rect,
                               TransparentColor = ResourceFile.TransparentColor,
                               HasTransparentColor = ResourceFile.HasTransparentColor,
-                              ForbiddenAreas = new ObservableCollection<Rect>()
+                              ForbiddenAreas = new ObservableCollection<Int32Rect>()
                           };
             ResourceFile.Resources.Add(res);
         }

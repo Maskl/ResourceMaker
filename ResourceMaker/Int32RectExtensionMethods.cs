@@ -6,7 +6,7 @@ using System.Windows;
 
 namespace ResourceMaker
 {
-    static class Int32ExtensionMethods
+    static class Int32RectExtensionMethods
     {
         public static bool Contains(this Int32Rect instance, Point point)
         {
