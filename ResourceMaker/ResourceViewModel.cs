@@ -45,6 +45,16 @@ namespace ResourceMaker
 
 
 
+        public void DeleteResource()
+        {
+            if (MessageBox.Show("Are you sure? (Can not be undone)", "Delete resource?", MessageBoxButton.YesNo) ==
+                MessageBoxResult.Yes)
+            {
+                ResourceFile.Resources.Remove(Resource);
+                dialogWindow.Close();
+            }
+        }
+
 
         public void CloseWindow()
         {
