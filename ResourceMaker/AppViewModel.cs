@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Dynamic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -114,22 +115,78 @@ namespace ResourceMaker
 
         public void BitmapMouseDown(Point mousePosition)
         {
-            if (NewResourceTemporary == null)
+            if (NewResourceTemporary == null && !IsResourceUnderMousePointer(mousePosition))
                 NewResourceStart = mousePosition;
         }
 
         public void BitmapMouseUp(Point mousePosition)
         {
-            if (!NewResourceTemporary.HasValue)
+            if (NewResourceTemporary.HasValue)
+            {
+                CreateNewResource(NewResourceTemporary.Value);
+                NewResourceStart = null;
+                NewResourceTemporary = null;
                 return;
+            }
 
-            CreateNewResource(NewResourceTemporary.Value);
-            NewResourceStart = null;
-            NewResourceTemporary = null;
+            var resource = GetResourceUnderMousePointer(mousePosition);
+            if (resource != null)
+                MessageBox.Show(resource.Crop.ToString());
+        }
+
+        public void BitmapMouseMove(Point mousePosition)
+        {
+            if (NewResourceStart != null)
+            {
+                var p1 = new Point(Math.Min(mousePosition.X, NewResourceStart.Value.X),
+                                   Math.Min(mousePosition.Y, NewResourceStart.Value.Y));
+                var p2 = new Point(Math.Max(mousePosition.X, NewResourceStart.Value.X),
+                                   Math.Max(mousePosition.Y, NewResourceStart.Value.Y));
+                NewResourceTemporary = new Rect(p1, p2 - p1);
+
+                Mouse.OverrideCursor = (mousePosition.X < NewResourceStart.Value.X) == (mousePosition.Y < NewResourceStart.Value.Y) ? Cursors.SizeNWSE : Cursors.SizeNESW;
+                return;
+            }
+
+            if (IsResourceUnderMousePointer(mousePosition))
+            {
+                Mouse.OverrideCursor = Cursors.Hand;
+                return;
+                
+            }
+            Mouse.OverrideCursor = Cursors.Cross;
+        }
+
+        public void BitmapMouseLeave(Point mousePosition)
+        {
+            Mouse.OverrideCursor = Cursors.Arrow;
+        }
+
+        private bool IsResourceUnderMousePointer(Point mousePosition)
+        {
+            return ResourceFile.Resources.Any(resource => resource.Crop.Contains(mousePosition));
+        }
+
+        private Resource GetResourceUnderMousePointer(Point mousePosition)
+        {
+            return ResourceFile.Resources.FirstOrDefault(resource => resource.Crop.Contains(mousePosition));
         }
 
         private void CreateNewResource(Rect rect)
         {
+            if (rect.Height < 30 || rect.Width < 30)
+            {
+                MessageBox.Show("Too small.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (ResourceFile.Resources.Select(resource => resource.Crop).Any(
+                roth => rect.Left < roth.Right && rect.Right > roth.Left && rect.Top < roth.Bottom && rect.Bottom > roth.Top))
+            {
+                MessageBox.Show("Resource shouldn't intersect any other.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             var res = new Resource
                           {
                               Name = "Unnamed",
@@ -139,16 +196,6 @@ namespace ResourceMaker
                               ForbiddenAreas = new ObservableCollection<Rect>()
                           };
             ResourceFile.Resources.Add(res);
-        }
-
-        public void BitmapMouseMove(Point mousePosition)
-        {
-            if (NewResourceStart == null)
-                return;
-
-            var p1 = new Point(Math.Min(mousePosition.X, NewResourceStart.Value.X), Math.Min(mousePosition.Y, NewResourceStart.Value.Y));
-            var p2 = new Point(Math.Max(mousePosition.X, NewResourceStart.Value.X), Math.Max(mousePosition.Y, NewResourceStart.Value.Y));
-            NewResourceTemporary = new Rect(p1, p2 - p1);
         }
 
         private bool _isNoBitmapLoaded;

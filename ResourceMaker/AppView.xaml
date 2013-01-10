@@ -79,7 +79,8 @@
                        Stretch="None"
                        cal:Message.Attach="[Event MouseDown] = [Action BitmapMouseDown($mousepoint)];
                                        [Event MouseUp] = [Action BitmapMouseUp($mousepoint)];
-                                       [Event MouseMove] = [Action BitmapMouseMove($mousepoint)]" />
+                                       [Event MouseMove] = [Action BitmapMouseMove($mousepoint)];
+                                       [Event MouseLeave] = [Action BitmapMouseLeave($mousepoint)]" />
 
                 <Border IsHitTestVisible="False"
                         Canvas.Left="{Binding NewResourceTemporary.X}"
