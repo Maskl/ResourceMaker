@@ -17,6 +17,10 @@ namespace ResourceMaker
         [DisplayName("Transparent color")]
         public Color TransparentColor { get; set; }
 
+        [Category("Bitmap")]
+        [DisplayName("Has transparent color")]
+        public bool HasTransparentColor { get; set; }
+
         [Category("Data")]
         [DisplayName("Layers")]
         public ObservableCollection<string> Layers { get; set; }

@@ -34,13 +34,13 @@ namespace ResourceMaker
             New();
         }
 
-        public void OpenWindow()
+        public void OpenResourceWindow(Resource resource)
         {
             dynamic settings = new ExpandoObject();
             settings.WindowStartupLocation = WindowStartupLocation.Manual;
             settings.WindowStyle = WindowStyle.ToolWindow;
             settings.ShowInTaskbar = false;
-            _windowManager.ShowDialog(new ResourceViewModel(_eventAggregator), null, settings);
+            _windowManager.ShowDialog(new ResourceViewModel(_eventAggregator, resource, ResourceFile, CurrentDirectory), null, settings);
         }
 
         public void LoadBitmap()
@@ -58,11 +58,13 @@ namespace ResourceMaker
             var uri = new Uri(bitmapFileName);
             ResourcesBitmap = new BitmapImage(uri);
             IsNoBitmapLoaded = false;
+            CurrentDirectory = System.IO.Path.GetDirectoryName(uri.LocalPath) + System.IO.Path.AltDirectorySeparatorChar;
 
             ResourceFile = new ResourceFile
                              {
                                  BitmapFileName = System.IO.Path.GetFileName(uri.LocalPath),
                                  TransparentColor = Colors.Magenta,
+                                 HasTransparentColor = true,
                                  Layers = new ObservableCollection<string> {"Default"},
                                  Resources = new ObservableCollection<Resource>()
                              };
@@ -131,18 +133,23 @@ namespace ResourceMaker
 
             var resource = GetResourceUnderMousePointer(mousePosition);
             if (resource != null)
-                MessageBox.Show(resource.Crop.ToString());
+            {
+                OpenResourceWindow(resource);
+            }
         }
 
         public void BitmapMouseMove(Point mousePosition)
         {
+            Filters = new Filters {Category = mousePosition.ToString()};
             if (NewResourceStart != null)
             {
                 var p1 = new Point(Math.Min(mousePosition.X, NewResourceStart.Value.X),
                                    Math.Min(mousePosition.Y, NewResourceStart.Value.Y));
                 var p2 = new Point(Math.Max(mousePosition.X, NewResourceStart.Value.X),
                                    Math.Max(mousePosition.Y, NewResourceStart.Value.Y));
-                NewResourceTemporary = new Rect(p1, p2 - p1);
+            
+                NewResourceTemporary = new Int32Rect((int) p1.X, (int) p1.Y, (int) (p2 - p1).X, (int) (p2 - p1).Y);
+
 
                 Mouse.OverrideCursor = (mousePosition.X < NewResourceStart.Value.X) == (mousePosition.Y < NewResourceStart.Value.Y) ? Cursors.SizeNWSE : Cursors.SizeNESW;
                 return;
@@ -164,15 +171,15 @@ namespace ResourceMaker
 
         private bool IsResourceUnderMousePointer(Point mousePosition)
         {
-            return ResourceFile.Resources.Any(resource => resource.Crop.Contains(mousePosition));
+            return ResourceFile != null && ResourceFile.Resources.Any(resource => resource.Crop.Contains(mousePosition));
         }
 
         private Resource GetResourceUnderMousePointer(Point mousePosition)
         {
-            return ResourceFile.Resources.FirstOrDefault(resource => resource.Crop.Contains(mousePosition));
+            return ResourceFile == null ? null : ResourceFile.Resources.FirstOrDefault(resource => resource.Crop.Contains(mousePosition));
         }
 
-        private void CreateNewResource(Rect rect)
+        private void CreateNewResource(Int32Rect rect)
         {
             if (rect.Height < 30 || rect.Width < 30)
             {
@@ -181,7 +188,7 @@ namespace ResourceMaker
             }
 
             if (ResourceFile.Resources.Select(resource => resource.Crop).Any(
-                roth => rect.Left < roth.Right && rect.Right > roth.Left && rect.Top < roth.Bottom && rect.Bottom > roth.Top))
+                roth => rect.X < roth.X + roth.Width && rect.X + rect.Width > roth.X && rect.Y < roth.Y + roth.Height && rect.Y + rect.Height > roth.Y))
             {
                 MessageBox.Show("Resource shouldn't intersect any other.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -193,6 +200,7 @@ namespace ResourceMaker
                               Layer = ResourceFile.Layers.Count > 0 ? ResourceFile.Layers[0] : null,
                               Crop = rect,
                               TransparentColor = ResourceFile.TransparentColor,
+                              HasTransparentColor = ResourceFile.HasTransparentColor,
                               ForbiddenAreas = new ObservableCollection<Rect>()
                           };
             ResourceFile.Resources.Add(res);
@@ -212,8 +220,8 @@ namespace ResourceMaker
             set { _newResourceStart = value; NotifyOfPropertyChange(() => NewResourceStart); }
         }
 
-        private Rect? _newResourceTemporary;
-        public Rect? NewResourceTemporary
+        private Int32Rect? _newResourceTemporary;
+        public Int32Rect? NewResourceTemporary
         {
             get { return _newResourceTemporary; }
             set { _newResourceTemporary = value; NotifyOfPropertyChange(() => NewResourceTemporary); }
@@ -245,6 +253,13 @@ namespace ResourceMaker
         {
             get { return _resourcesBitmap; }
             set { _resourcesBitmap = value; NotifyOfPropertyChange(() => ResourcesBitmap); }
+        }
+
+        private string _currentDirectory;
+        public string CurrentDirectory
+        {
+            get { return _currentDirectory; }
+            set { _currentDirectory = value; NotifyOfPropertyChange(() => CurrentDirectory); }
         }
 
         public void Handle(ColorEvent message)
