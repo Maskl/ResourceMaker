@@ -10,7 +10,7 @@ using System.Windows.Media;
 namespace ResourceMaker
 {
     [Export(typeof(ResourceViewModel))]
-    public class ResourceViewModel : PropertyChangedBase
+    public class ResourceViewModel : PropertyChangedBase, IViewAware
     {
         private readonly IEventAggregator _events;
 
@@ -46,7 +46,10 @@ namespace ResourceMaker
 
 
 
-
+        public void CloseWindow()
+        {
+            dialogWindow.Close();
+        }
 
 
 
@@ -208,5 +211,21 @@ namespace ResourceMaker
             get { return _currentDirectory; }
             set { _currentDirectory = value; NotifyOfPropertyChange(() => CurrentDirectory); }
         }
+
+        private Window dialogWindow;
+        public void AttachView(object view, object context = null)
+        {
+            dialogWindow = view as Window;
+            if (ViewAttached != null)
+                ViewAttached(this,
+                   new ViewAttachedEventArgs() { Context = context, View = view });
+        }
+
+        public object GetView(object context = null)
+        {
+            return dialogWindow;
+        }
+
+        public event EventHandler<ViewAttachedEventArgs> ViewAttached;
     }
 }
