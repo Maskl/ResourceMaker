@@ -3,13 +3,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit.PropertyGrid;assembly=WPFToolkit.Extended"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+        xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro" xmlns:Converters="clr-namespace:ResourceMaker"
         mc:Ignorable="d"
         x:Class="ResourceMaker.ResourceView"
         Title="Selected resource editor"
         Width="650"
         Height="400">
     <Grid>
+        <Grid.Resources>
+            <Converters:IsNullToVisibilityConverter x:Key="IsNullToVisibilityConverter" />
+        </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="300" />
@@ -61,11 +64,12 @@
                         Canvas.Top="{Binding NewForbiddenAreaTemporary.Y}"
                         Width="{Binding NewForbiddenAreaTemporary.Width}"
                         Height="{Binding NewForbiddenAreaTemporary.Height}"
+                        Visibility="{Binding NewForbiddenAreaTemporary, Converter={StaticResource IsNullToVisibilityConverter}}"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         BorderThickness="1px"
-                        BorderBrush="#ff00ff00"
-                        Background="#3300ff00" />
+                        BorderBrush="#ffff0000"
+                        Background="#33ff0000" />
 
                 <ItemsControl ItemsSource="{Binding Resource.ForbiddenAreas}"
                               Grid.Row="1">
@@ -80,8 +84,8 @@
                                     Width="{Binding Width}"
                                     Height="{Binding Height}"
                                     BorderThickness="1px"
-                                    BorderBrush="#ff4444ff"
-                                    Background="#334444ff" />
+                                    BorderBrush="#ffff4444"
+                                    Background="#33ff4444" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                     <ItemsControl.ItemContainerStyle>

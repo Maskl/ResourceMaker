@@ -89,6 +89,7 @@
     </Compile>
     <Compile Include="AppViewModel.cs" />
     <Compile Include="ColorEvent.cs" />
+    <Compile Include="IsNullToVisibilityConverter.cs" />
     <Compile Include="Int32RectExtensionMethods.cs" />
     <Compile Include="LayerToColorConverter.cs" />
     <Compile Include="ResourceFile.cs" />

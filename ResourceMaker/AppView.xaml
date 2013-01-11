@@ -12,6 +12,7 @@
     <Grid>
         <Grid.Resources>
             <Converters:LayerToColorConverter x:Key="LayerToColorConverter" />
+            <Converters:IsNullToVisibilityConverter x:Key="IsNullToVisibilityConverter" />
         </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -51,12 +52,14 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <xctk:PropertyGrid Grid.Row="0"
+            <xctk:PropertyGrid Name="FiltersProp"
+                               Grid.Row="0"
                                SelectedObject="{Binding Filters}"
                                ShowSummary="False"
                                ShowSearchBox="False"
                                ShowSortOptions="False"
-                               IsCategorized="False" />
+                               IsCategorized="False"
+                               cal:Message.Attach="[Event PropertyValueChanged] = [Action UpdateFilters]" />
 
             <xctk:PropertyGrid Grid.Row="1"
                                SelectedObject="{Binding ResourceFile}"
@@ -92,13 +95,14 @@
                         Canvas.Top="{Binding NewResourceTemporary.Y}"
                         Width="{Binding NewResourceTemporary.Width}"
                         Height="{Binding NewResourceTemporary.Height}"
+                        Visibility="{Binding NewResourceTemporary, Converter={StaticResource IsNullToVisibilityConverter}}"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         BorderThickness="1px"
                         BorderBrush="#ff00ff00"
                         Background="#3300ff00" />
 
-                <ItemsControl ItemsSource="{Binding ResourceFile.Resources}"
+                <ItemsControl ItemsSource="{Binding ResourcesToRender}"
                               Grid.Row="1">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -140,7 +144,7 @@
                 Width="200"
                 Height="50">
             <Button Name="LoadBitmap">
-                Load bitmap...
+                Click to load a bitmap...
             </Button>
         </Border>
 

@@ -16,7 +16,7 @@ namespace ResourceMaker
     public class Filters
     {
         public string Name { get; set; }
-        public string Category { get; set; }
+        public string Layer { get; set; }
     }
 
     [Export(typeof(AppViewModel))]
@@ -41,6 +41,7 @@ namespace ResourceMaker
             settings.WindowStyle = WindowStyle.ToolWindow;
             settings.ShowInTaskbar = false;
             _windowManager.ShowDialog(new ResourceViewModel(_eventAggregator, resource, ResourceFile, CurrentDirectory), null, settings);
+            UpdateFilters();
         }
 
         public void LoadBitmap()
@@ -77,6 +78,32 @@ namespace ResourceMaker
             ResourceFile = null;
             ResourcesBitmap = null;
             Filters = new Filters();
+            ResourcesToRender = new ObservableCollection<Resource>();
+        }
+
+        public void UpdateFilters()
+        {
+            ResourcesToRender.Clear();
+            foreach (var resource in ResourceFile.Resources)
+            {
+                if (resource.Name != null && Filters.Name != null)
+                {
+                    var r = resource.Name.Trim().ToLower();
+                    var f = Filters.Name.Trim().ToLower();
+                    if (!r.Contains(f) && !f.Contains(r))
+                        continue;
+                }
+
+                if (resource.Layer != null && Filters.Layer != null)
+                {
+                    var r = resource.Layer.Trim().ToLower();
+                    var f = Filters.Layer.Trim().ToLower();
+                    if (!r.Contains(f) && !f.Contains(r))
+                        continue;
+                }
+
+                ResourcesToRender.Add(resource);
+            }
         }
 
         public void Open()
@@ -139,7 +166,6 @@ namespace ResourceMaker
 
         public void BitmapMouseMove(Point mousePosition)
         {
-            Filters = new Filters {Category = mousePosition.ToString()};
             if (NewResourceStart != null)
             {
                 var p1 = new Point(Math.Min(mousePosition.X, NewResourceStart.Value.X),
@@ -203,6 +229,7 @@ namespace ResourceMaker
                               ForbiddenAreas = new ObservableCollection<Int32Rect>()
                           };
             ResourceFile.Resources.Add(res);
+            UpdateFilters();
         }
 
         private bool _isNoBitmapLoaded;
@@ -244,7 +271,7 @@ namespace ResourceMaker
         public Filters Filters
         {
             get { return _filters; }
-            set { _filters = value; NotifyOfPropertyChange(() => Filters); }
+            set { _filters = value; NotifyOfPropertyChange(() => Filters);}
         }
 
         private BitmapImage _resourcesBitmap;
@@ -259,6 +286,13 @@ namespace ResourceMaker
         {
             get { return _currentDirectory; }
             set { _currentDirectory = value; NotifyOfPropertyChange(() => CurrentDirectory); }
+        }
+
+        private ObservableCollection<Resource> _resourcesToRender;
+        public ObservableCollection<Resource> ResourcesToRender
+        {
+            get { return _resourcesToRender; }
+            set { _resourcesToRender = value; NotifyOfPropertyChange(() => ResourcesToRender); }
         }
 
         public void Handle(ColorEvent message)
