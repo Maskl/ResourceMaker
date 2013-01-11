@@ -3,13 +3,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit.PropertyGrid;assembly=WPFToolkit.Extended"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+        xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro" xmlns:Converters="clr-namespace:ResourceMaker"
         mc:Ignorable="d"
         x:Class="ResourceMaker.AppView"
         Title="Resource maker"
         Width="800"
         Height="500">
     <Grid>
+        <Grid.Resources>
+            <Converters:LayerToColorConverter x:Key="LayerToColorConverter" />
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
@@ -108,8 +111,16 @@
                                     Width="{Binding Crop.Width}"
                                     Height="{Binding Crop.Height}"
                                     BorderThickness="1px"
-                                    BorderBrush="#ff4444ff"
-                                    Background="#334444ff" />
+                                    BorderBrush="{Binding Layer, Converter={StaticResource LayerToColorConverter}, ConverterParameter=true}"
+                                    Background="{Binding Layer, Converter={StaticResource LayerToColorConverter}, ConverterParameter=false}">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Foreground="{Binding Layer, Converter={StaticResource LayerToColorConverter}, ConverterParameter=true}"
+                                               FontWeight="Bold"
+                                               Text="{Binding Name}" />
+                                    <TextBlock Foreground="{Binding Layer, Converter={StaticResource LayerToColorConverter}, ConverterParameter=true}"
+                                               Text="{Binding Layer}" />
+                                </StackPanel>
+                            </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                     <ItemsControl.ItemContainerStyle>

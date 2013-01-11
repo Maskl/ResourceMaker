@@ -28,7 +28,7 @@
                                ShowSummary="False"
                                ShowSearchBox="False"
                                ShowSortOptions="False"
-                               VerticalContentAlignment="Stretch" />
+                               VerticalContentAlignment="Stretch"/>
             
             <Button Grid.Row="1"
                     Name="DeleteResource">Delete this resource</Button>

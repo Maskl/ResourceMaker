@@ -90,6 +90,7 @@
     <Compile Include="AppViewModel.cs" />
     <Compile Include="ColorEvent.cs" />
     <Compile Include="Int32RectExtensionMethods.cs" />
+    <Compile Include="LayerToColorConverter.cs" />
     <Compile Include="ResourceFile.cs" />
     <Compile Include="Resource.cs" />
     <Compile Include="ResourceView.xaml.cs">
@@ -112,6 +113,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows;
@@ -40,6 +41,7 @@ namespace ResourceMaker
             CurrentDirectory = currentDirectory;
 
             ResourceBitmap = CreateCroppedBitmapResolutionInvariant(new Uri(CurrentDirectory + ResourceFile.BitmapFileName), resource.Crop);
+
         }
 
 
@@ -47,21 +49,17 @@ namespace ResourceMaker
 
         public void DeleteResource()
         {
-            if (MessageBox.Show("Are you sure? (Can not be undone)", "Delete resource?", MessageBoxButton.YesNo) ==
-                MessageBoxResult.Yes)
+            if (MessageBox.Show("Are you sure? (Can not be undone)", "Delete resource?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 ResourceFile.Resources.Remove(Resource);
                 dialogWindow.Close();
             }
         }
 
-
         public void CloseWindow()
         {
             dialogWindow.Close();
         }
-
-
 
         public void BitmapMouseDown(Point mousePosition)
         {
@@ -181,7 +179,6 @@ namespace ResourceMaker
 
         public void Red()
         {
-            _events.Publish(new ColorEvent(new SolidColorBrush(Colors.Red)));
         }
 
         public void Green()
@@ -227,8 +224,10 @@ namespace ResourceMaker
         {
             dialogWindow = view as Window;
             if (ViewAttached != null)
+            {
                 ViewAttached(this,
-                   new ViewAttachedEventArgs() { Context = context, View = view });
+                             new ViewAttachedEventArgs() {Context = context, View = view});
+            }
         }
 
         public object GetView(object context = null)

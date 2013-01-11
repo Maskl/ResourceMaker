@@ -65,7 +65,6 @@ namespace ResourceMaker
                                  BitmapFileName = System.IO.Path.GetFileName(uri.LocalPath),
                                  TransparentColor = Colors.Magenta,
                                  HasTransparentColor = true,
-                                 Layers = new ObservableCollection<string> {"Default"},
                                  Resources = new ObservableCollection<Resource>()
                              };
         }
@@ -197,7 +196,7 @@ namespace ResourceMaker
             var res = new Resource
                           {
                               Name = "Unnamed",
-                              Layer = ResourceFile.Layers.Count > 0 ? ResourceFile.Layers[0] : null,
+                              Layer = "Default",
                               Crop = rect,
                               TransparentColor = ResourceFile.TransparentColor,
                               HasTransparentColor = ResourceFile.HasTransparentColor,

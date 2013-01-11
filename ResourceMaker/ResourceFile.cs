@@ -22,10 +22,6 @@ namespace ResourceMaker
         public bool HasTransparentColor { get; set; }
 
         [Category("Data")]
-        [DisplayName("Layers")]
-        public ObservableCollection<string> Layers { get; set; }
-
-        [Category("Data")]
         [DisplayName("Resources")]
         public ObservableCollection<Resource> Resources { get; set; }
     }
