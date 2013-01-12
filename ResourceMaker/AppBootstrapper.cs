@@ -6,7 +6,7 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 
-namespace ResourceMaker
+namespace ResourceMaker.Features.App
 {
     public class AppBootstrapper : Bootstrapper<AppViewModel>
     {

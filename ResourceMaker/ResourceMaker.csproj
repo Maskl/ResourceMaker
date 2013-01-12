@@ -84,20 +84,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppBootstrapper.cs" />
-    <Compile Include="AppView.xaml.cs">
+    <Compile Include="Features\App\AppView.xaml.cs">
       <DependentUpon>AppView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AppViewModel.cs" />
+    <Compile Include="Features\App\AppViewModel.cs" />
     <Compile Include="ColorEvent.cs" />
-    <Compile Include="IsNullToVisibilityConverter.cs" />
-    <Compile Include="Int32RectExtensionMethods.cs" />
-    <Compile Include="LayerToColorConverter.cs" />
-    <Compile Include="ResourceFile.cs" />
-    <Compile Include="Resource.cs" />
-    <Compile Include="ResourceView.xaml.cs">
+    <Compile Include="Converters\IsNullToVisibilityConverter.cs" />
+    <Compile Include="Extensions\Int32RectExtensionMethods.cs" />
+    <Compile Include="Converters\LayerToColorConverter.cs" />
+    <Compile Include="Features\App\ResourceFile.cs" />
+    <Compile Include="Features\Resource\Resource.cs" />
+    <Compile Include="Features\Resource\ResourceView.xaml.cs">
       <DependentUpon>ResourceView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ResourceViewModel.cs" />
+    <Compile Include="Features\Resource\ResourceViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -124,17 +124,17 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="AppView.xaml">
+    <Page Include="Features\App\AppView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ResourceView.xaml">
+    <Page Include="Features\Resource\ResourceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="data\background.png" />
+    <Resource Include="Data\background.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

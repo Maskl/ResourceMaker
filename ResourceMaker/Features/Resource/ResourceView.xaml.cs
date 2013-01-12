@@ -1,4 +1,4 @@
-﻿namespace ResourceMaker
+﻿namespace ResourceMaker.Features.Resource
 {
     public partial class ResourceView
     {

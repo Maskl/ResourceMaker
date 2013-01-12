@@ -3,15 +3,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit.PropertyGrid;assembly=WPFToolkit.Extended"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro" xmlns:Converters="clr-namespace:ResourceMaker"
+        xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+        xmlns:Converters="clr-namespace:ResourceMaker" xmlns:converters="clr-namespace:ResourceMaker.Converters"
         mc:Ignorable="d"
-        x:Class="ResourceMaker.ResourceView"
+        x:Class="ResourceMaker.Features.Resource.ResourceView"
         Title="Selected resource editor"
         Width="650"
         Height="400">
     <Grid>
         <Grid.Resources>
-            <Converters:IsNullToVisibilityConverter x:Key="IsNullToVisibilityConverter" />
+            <converters:IsNullToVisibilityConverter x:Key="IsNullToVisibilityConverter" />
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -31,11 +32,11 @@
                                ShowSummary="False"
                                ShowSearchBox="False"
                                ShowSortOptions="False"
-                               VerticalContentAlignment="Stretch"/>
-            
+                               VerticalContentAlignment="Stretch" />
+
             <Button Grid.Row="1"
                     Name="DeleteResource">Delete this resource</Button>
-            <Button Grid.Row="1" 
+            <Button Grid.Row="1"
                     Grid.Column="1"
                     Name="CloseWindow">OK</Button>
         </Grid>
@@ -43,7 +44,7 @@
         <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto"
                       ScrollViewer.VerticalScrollBarVisibility="Auto">
             <ScrollViewer.Background>
-                <ImageBrush ImageSource="data/background.png"
+                <ImageBrush ImageSource="../../data/background.png"
                             TileMode="Tile"
                             Stretch="None"
                             ViewportUnits="Absolute"

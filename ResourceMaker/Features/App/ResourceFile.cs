@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Media;
+using ResourceMaker.Features.Resource;
 
 namespace ResourceMaker
 {

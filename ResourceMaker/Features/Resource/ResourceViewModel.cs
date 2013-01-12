@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows;
@@ -8,7 +7,7 @@ using System.Windows.Media.Imaging;
 using Caliburn.Micro;
 using System.Windows.Media;
 
-namespace ResourceMaker
+namespace ResourceMaker.Features.Resource
 {
     [Export(typeof(ResourceViewModel))]
     public class ResourceViewModel : PropertyChangedBase, IViewAware

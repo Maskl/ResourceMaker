@@ -5,7 +5,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Media;
 
-namespace ResourceMaker
+namespace ResourceMaker.Features.Resource
 {
     public class Resource
     {

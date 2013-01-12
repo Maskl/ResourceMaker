@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Dynamic;
 using System.IO;
@@ -10,9 +9,9 @@ using System.Windows.Media.Imaging;
 using Caliburn.Micro;
 using System.ComponentModel.Composition;
 using System.Windows.Media;
-using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
+using ResourceMaker.Features.Resource;
 
-namespace ResourceMaker
+namespace ResourceMaker.Features.App
 {
     public class Filters
     {
@@ -35,7 +34,7 @@ namespace ResourceMaker
             New();
         }
 
-        public void OpenResourceWindow(Resource resource)
+        public void OpenResourceWindow(Resource.Resource resource)
         {
             dynamic settings = new ExpandoObject();
             settings.WindowStartupLocation = WindowStartupLocation.Manual;
@@ -68,7 +67,7 @@ namespace ResourceMaker
                                  BitmapFileName = Path.GetFileName(uri.LocalPath),
                                  TransparentColor = Colors.Magenta,
                                  HasTransparentColor = true,
-                                 Resources = new ObservableCollection<Resource>()
+                                 Resources = new ObservableCollection<Resource.Resource>()
                              };
         }
 
@@ -80,7 +79,7 @@ namespace ResourceMaker
             ResourceFile = null;
             ResourcesBitmap = null;
             Filters = new Filters();
-            ResourcesToRender = new ObservableCollection<Resource>();
+            ResourcesToRender = new ObservableCollection<Resource.Resource>();
         }
 
         public void UpdateFilters()
@@ -243,7 +242,7 @@ namespace ResourceMaker
             return ResourceFile != null && ResourceFile.Resources.Any(resource => resource.Crop.Contains(mousePosition));
         }
 
-        private Resource GetResourceUnderMousePointer(Point mousePosition)
+        private Resource.Resource GetResourceUnderMousePointer(Point mousePosition)
         {
             return ResourceFile == null ? null : ResourceFile.Resources.FirstOrDefault(resource => resource.Crop.Contains(mousePosition));
         }
@@ -263,7 +262,7 @@ namespace ResourceMaker
                 return;
             }
 
-            var res = new Resource
+            var res = new Resource.Resource
                           {
                               Name = "Unnamed",
                               Layer = "Default",
@@ -332,8 +331,8 @@ namespace ResourceMaker
             set { _currentDirectory = value; NotifyOfPropertyChange(() => CurrentDirectory); }
         }
 
-        private ObservableCollection<Resource> _resourcesToRender;
-        public ObservableCollection<Resource> ResourcesToRender
+        private ObservableCollection<Resource.Resource> _resourcesToRender;
+        public ObservableCollection<Resource.Resource> ResourcesToRender
         {
             get { return _resourcesToRender; }
             set { _resourcesToRender = value; NotifyOfPropertyChange(() => ResourcesToRender); }
