@@ -19,7 +19,6 @@ namespace Sklodowski.ResourceMaker
 
             var batch = new CompositionBatch();
             batch.AddExportedValue<IWindowManager>(new WindowManager());
-            batch.AddExportedValue<IEventAggregator>(new EventAggregator());
             batch.AddExportedValue(_container);
 
             _container.Compose(batch);

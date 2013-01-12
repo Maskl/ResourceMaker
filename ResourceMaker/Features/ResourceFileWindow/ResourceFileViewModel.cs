@@ -29,7 +29,7 @@ namespace Sklodowski.ResourceMaker.Features.ResourceFileWindow
         public ResourceFileViewModel(IWindowManager windowManager)
         {
             _windowManager = windowManager;
-            New();
+            NewResourceFile();
         }
 
         public void OpenResourceWindow(Resource resource)
@@ -42,6 +42,17 @@ namespace Sklodowski.ResourceMaker.Features.ResourceFileWindow
             UpdateFilters();
         }
 
+        public void NewResourceFile()
+        {
+            IsNoBitmapLoaded = true;
+            NewResourceStart = null;
+            NewResourceTemporary = null;
+            ResourceFile = null;
+            ResourcesBitmap = null;
+            Filters = new Filters();
+            ResourcesToRender = new ObservableCollection<Resource>();
+        }
+
         public void LoadBitmap()
         {
             var dialog = new Microsoft.Win32.OpenFileDialog();
@@ -50,12 +61,7 @@ namespace Sklodowski.ResourceMaker.Features.ResourceFileWindow
             if (!res.Value)
                 return;
 
-            PrepareNewResourceFile(dialog.FileName);
-        }
-
-        public void PrepareNewResourceFile(string bitmapFileName)
-        {
-            var uri = new Uri(bitmapFileName);
+            var uri = new Uri(dialog.FileName);
             ResourcesBitmap = new BitmapImage(uri);
             IsNoBitmapLoaded = false;
             CurrentDirectory = Path.GetDirectoryName(uri.LocalPath) + Path.AltDirectorySeparatorChar;
@@ -67,17 +73,6 @@ namespace Sklodowski.ResourceMaker.Features.ResourceFileWindow
                                  HasTransparentColor = true,
                                  Resources = new ObservableCollection<Resource>()
                              };
-        }
-
-        public void New()
-        {
-            IsNoBitmapLoaded = true;
-            NewResourceStart = null;
-            NewResourceTemporary = null;
-            ResourceFile = null;
-            ResourcesBitmap = null;
-            Filters = new Filters();
-            ResourcesToRender = new ObservableCollection<Resource>();
         }
 
         public void UpdateFilters()
@@ -105,7 +100,7 @@ namespace Sklodowski.ResourceMaker.Features.ResourceFileWindow
             }
         }
 
-        public void Open()
+        public void LoadResourceFile()
         {
             var dialog = new Microsoft.Win32.OpenFileDialog();
             dialog.Filter = "Resource files (*.resource) | *.resource";
@@ -114,7 +109,7 @@ namespace Sklodowski.ResourceMaker.Features.ResourceFileWindow
                 return;
 
             // Reset current resource and bitmap.
-            New();
+            NewResourceFile();
 
             try
             {
@@ -141,11 +136,11 @@ namespace Sklodowski.ResourceMaker.Features.ResourceFileWindow
             }
         }
 
-        public void Save()
+        public void SaveResourceFile()
         {
             if (IsNoBitmapLoaded)
             {
-                MessageBox.Show("No bitmap loaded", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("No bitmap loaded.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -269,6 +264,7 @@ namespace Sklodowski.ResourceMaker.Features.ResourceFileWindow
                               HasTransparentColor = ResourceFile.HasTransparentColor,
                               ForbiddenAreas = new ObservableCollection<Int32Rect>()
                           };
+
             ResourceFile.Resources.Add(res);
             UpdateFilters();
         }

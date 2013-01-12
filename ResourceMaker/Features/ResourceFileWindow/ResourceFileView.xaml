@@ -11,41 +11,115 @@
         Width="800"
         Height="500">
     <Grid>
+        
         <Grid.Resources>
             <converters:LayerToColorConverter x:Key="LayerToColorConverter" />
             <converters:IsNullToVisibilityConverter x:Key="IsNullToVisibilityConverter" />
         </Grid.Resources>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="300" />
         </Grid.ColumnDefinitions>
-        <ContentControl x:Name="ColorModel"
-                        Margin="27.167,0,0,8"
-                        HorizontalAlignment="Left"
-                        Height="55.5"
-                        VerticalAlignment="Bottom"
-                        Width="93.667"
-                        Grid.Column="2"
-                        Grid.Row="1" />
-        <Rectangle Grid.Column="1"
-                   Width="100"
-                   Height="100"
-                   Fill="{Binding Color}"
-                   Grid.Row="1" />
-        <Button x:Name="OpenWindow"
-                Content="{Binding ResourceFile.BitmapFileName}"
-                HorizontalAlignment="Right"
-                Height="54.5"
-                VerticalAlignment="Bottom"
-                Width="109.167"
-                Grid.Column="2"
-                Margin="0,0,8,31.5"
-                Grid.Row="1" />
+        
+        <!-- Resources image -->
+        <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      Grid.Row="1">
+            
+            <ScrollViewer.Background>
+                <ImageBrush ImageSource="../../data/background.png"
+                            TileMode="Tile"
+                            Stretch="None"
+                            ViewportUnits="Absolute"
+                            Viewport="0,0,16,16" />
+            </ScrollViewer.Background>
+            
+            <Canvas Width="{Binding Width, ElementName=ResourcesBitmap}"
+                    Height="{Binding Height, ElementName=ResourcesBitmap}">
 
+                <!-- Bitmap -->
+                <Image Name="ResourcesBitmap"
+                       Width="{Binding RelativeSource={RelativeSource Self}, Path=Source.PixelWidth}"
+                       Height="{Binding RelativeSource={RelativeSource Self}, Path=Source.PixelHeight}"
+                       cal:Message.Attach="[Event MouseDown] = [Action BitmapMouseDown($mousepoint)];
+                                       [Event MouseUp] = [Action BitmapMouseUp($mousepoint)];
+                                       [Event MouseMove] = [Action BitmapMouseMove($mousepoint)];
+                                       [Event MouseLeave] = [Action BitmapMouseLeave($mousepoint)]" />
+
+                <!-- New resource rectangle -->
+                <Border IsHitTestVisible="False"
+                        Canvas.Left="{Binding NewResourceTemporary.X}"
+                        Canvas.Top="{Binding NewResourceTemporary.Y}"
+                        Width="{Binding NewResourceTemporary.Width}"
+                        Height="{Binding NewResourceTemporary.Height}"
+                        Visibility="{Binding NewResourceTemporary, Converter={StaticResource IsNullToVisibilityConverter}}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        BorderThickness="1px"
+                        BorderBrush="#ff00ff00"
+                        Background="#3300ff00" />
+                
+                <!-- All resources rectangles -->
+                <ItemsControl ItemsSource="{Binding ResourcesToRender}"
+                              Grid.Row="1">
+                    
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <!-- Rectangle -->
+                            <Border IsHitTestVisible="False"
+                                    Width="{Binding Crop.Width}"
+                                    Height="{Binding Crop.Height}"
+                                    BorderThickness="1px"
+                                    BorderBrush="{Binding Layer, Converter={StaticResource LayerToColorConverter}, ConverterParameter=true}"
+                                    Background="{Binding Layer, Converter={StaticResource LayerToColorConverter}, ConverterParameter=false}">
+                                
+                                <!-- Name and layer name -->
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Foreground="{Binding Layer, Converter={StaticResource LayerToColorConverter}, ConverterParameter=true}"
+                                               FontWeight="Bold"
+                                               Text="{Binding Name}" />
+                                    <TextBlock Foreground="{Binding Layer, Converter={StaticResource LayerToColorConverter}, ConverterParameter=true}"
+                                               Text="{Binding Layer}" />
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    
+                    <ItemsControl.ItemContainerStyle>
+                        <Style>
+                            <Setter Property="Canvas.Left"
+                                    Value="{Binding Crop.X}" />
+                            <Setter Property="Canvas.Top"
+                                    Value="{Binding Crop.Y}" />
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                </ItemsControl>
+            </Canvas>
+        </ScrollViewer>
+
+        <!-- "No bitmap" button -->
+        <Border x:Name="IsNoBitmapLoaded"
+                Grid.Row="1"
+                Width="200"
+                Height="50">
+            <Button Name="LoadBitmap">
+                Click to load a bitmap...
+            </Button>
+        </Border>
+
+        <!-- Property grids -->
         <Grid Grid.Column="1"
               Grid.Row="1">
             <Grid.RowDefinitions>
@@ -53,8 +127,7 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <xctk:PropertyGrid Name="FiltersProp"
-                               Grid.Row="0"
+            <xctk:PropertyGrid Grid.Row="0"
                                SelectedObject="{Binding Filters}"
                                ShowSummary="False"
                                ShowSearchBox="False"
@@ -70,93 +143,15 @@
                                VerticalContentAlignment="Stretch" />
         </Grid>
 
-
-        <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                      ScrollViewer.VerticalScrollBarVisibility="Auto"
-                      Grid.Row="1">
-            <ScrollViewer.Background>
-                <ImageBrush ImageSource="../../data/background.png"
-                            TileMode="Tile"
-                            Stretch="None"
-                            ViewportUnits="Absolute"
-                            Viewport="0,0,16,16" />
-            </ScrollViewer.Background>
-            <Canvas Width="{Binding Width, ElementName=ResourcesBitmap}"
-                    Height="{Binding Height, ElementName=ResourcesBitmap}">
-                <Image Name="ResourcesBitmap"
-                       Width="{Binding RelativeSource={RelativeSource Self}, Path=Source.PixelWidth}"
-                       Height="{Binding RelativeSource={RelativeSource Self}, Path=Source.PixelHeight}"
-                       cal:Message.Attach="[Event MouseDown] = [Action BitmapMouseDown($mousepoint)];
-                                       [Event MouseUp] = [Action BitmapMouseUp($mousepoint)];
-                                       [Event MouseMove] = [Action BitmapMouseMove($mousepoint)];
-                                       [Event MouseLeave] = [Action BitmapMouseLeave($mousepoint)]" />
-
-                <Border IsHitTestVisible="False"
-                        Canvas.Left="{Binding NewResourceTemporary.X}"
-                        Canvas.Top="{Binding NewResourceTemporary.Y}"
-                        Width="{Binding NewResourceTemporary.Width}"
-                        Height="{Binding NewResourceTemporary.Height}"
-                        Visibility="{Binding NewResourceTemporary, Converter={StaticResource IsNullToVisibilityConverter}}"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        BorderThickness="1px"
-                        BorderBrush="#ff00ff00"
-                        Background="#3300ff00" />
-
-                <ItemsControl ItemsSource="{Binding ResourcesToRender}"
-                              Grid.Row="1">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <Canvas />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border IsHitTestVisible="False"
-                                    Width="{Binding Crop.Width}"
-                                    Height="{Binding Crop.Height}"
-                                    BorderThickness="1px"
-                                    BorderBrush="{Binding Layer, Converter={StaticResource LayerToColorConverter}, ConverterParameter=true}"
-                                    Background="{Binding Layer, Converter={StaticResource LayerToColorConverter}, ConverterParameter=false}">
-                                <StackPanel Orientation="Vertical">
-                                    <TextBlock Foreground="{Binding Layer, Converter={StaticResource LayerToColorConverter}, ConverterParameter=true}"
-                                               FontWeight="Bold"
-                                               Text="{Binding Name}" />
-                                    <TextBlock Foreground="{Binding Layer, Converter={StaticResource LayerToColorConverter}, ConverterParameter=true}"
-                                               Text="{Binding Layer}" />
-                                </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                    <ItemsControl.ItemContainerStyle>
-                        <Style>
-                            <Setter Property="Canvas.Left"
-                                    Value="{Binding Crop.X}" />
-                            <Setter Property="Canvas.Top"
-                                    Value="{Binding Crop.Y}" />
-                        </Style>
-                    </ItemsControl.ItemContainerStyle>
-                </ItemsControl>
-            </Canvas>
-        </ScrollViewer>
-
-        <Border x:Name="IsNoBitmapLoaded"
-                Grid.Row="1"
-                Width="200"
-                Height="50">
-            <Button Name="LoadBitmap">
-                Click to load a bitmap...
-            </Button>
-        </Border>
-
+        <!-- Menu -->
         <Menu Grid.ColumnSpan="2">
             <MenuItem Header="File">
                 <MenuItem Header="New"
-                          Name="New" />
+                          Name="NewResourceFile" />
                 <MenuItem Header="Open"
-                          Name="Open" />
+                          Name="LoadResourceFile" />
                 <MenuItem Header="Save"
-                          Name="Save" />
+                          Name="SaveResourceFile" />
                 <MenuItem Header="Exit"
                           Name="Exit" />
             </MenuItem>
