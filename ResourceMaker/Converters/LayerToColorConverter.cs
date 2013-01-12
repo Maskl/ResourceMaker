@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace ResourceMaker.Converters
+namespace Sklodowski.ResourceMaker.Converters
 {
     public class LayerToColorConverter : IValueConverter
     {

@@ -9,9 +9,10 @@ using System.Windows.Media.Imaging;
 using Caliburn.Micro;
 using System.ComponentModel.Composition;
 using System.Windows.Media;
-using ResourceMaker.Features.Resource;
+using Sklodowski.ResourceMaker.Extensions;
+using Sklodowski.ResourceMaker.Features.ResourceWindow;
 
-namespace ResourceMaker.Features.App
+namespace Sklodowski.ResourceMaker.Features.App
 {
     public class Filters
     {
@@ -20,27 +21,24 @@ namespace ResourceMaker.Features.App
     }
 
     [Export(typeof(AppViewModel))]
-    public class AppViewModel : PropertyChangedBase, IHandle<ColorEvent>
+    public class AppViewModel : PropertyChangedBase
     {
         private readonly IWindowManager _windowManager;
-        private readonly IEventAggregator _eventAggregator;
 
         [ImportingConstructor]
-        public AppViewModel(IWindowManager windowManager, IEventAggregator eventAggregator)
+        public AppViewModel(IWindowManager windowManager)
         {
             _windowManager = windowManager;
-            _eventAggregator = eventAggregator;
-            eventAggregator.Subscribe(this);
             New();
         }
 
-        public void OpenResourceWindow(Resource.Resource resource)
+        public void OpenResourceWindow(Resource resource)
         {
             dynamic settings = new ExpandoObject();
             settings.WindowStartupLocation = WindowStartupLocation.Manual;
             settings.WindowStyle = WindowStyle.ToolWindow;
             settings.ShowInTaskbar = false;
-            _windowManager.ShowDialog(new ResourceViewModel(_eventAggregator, resource, ResourceFile, CurrentDirectory), null, settings);
+            _windowManager.ShowDialog(new ResourceViewModel(resource, ResourceFile, CurrentDirectory), null, settings);
             UpdateFilters();
         }
 
@@ -67,7 +65,7 @@ namespace ResourceMaker.Features.App
                                  BitmapFileName = Path.GetFileName(uri.LocalPath),
                                  TransparentColor = Colors.Magenta,
                                  HasTransparentColor = true,
-                                 Resources = new ObservableCollection<Resource.Resource>()
+                                 Resources = new ObservableCollection<Resource>()
                              };
         }
 
@@ -79,7 +77,7 @@ namespace ResourceMaker.Features.App
             ResourceFile = null;
             ResourcesBitmap = null;
             Filters = new Filters();
-            ResourcesToRender = new ObservableCollection<Resource.Resource>();
+            ResourcesToRender = new ObservableCollection<Resource>();
         }
 
         public void UpdateFilters()
@@ -242,7 +240,7 @@ namespace ResourceMaker.Features.App
             return ResourceFile != null && ResourceFile.Resources.Any(resource => resource.Crop.Contains(mousePosition));
         }
 
-        private Resource.Resource GetResourceUnderMousePointer(Point mousePosition)
+        private Resource GetResourceUnderMousePointer(Point mousePosition)
         {
             return ResourceFile == null ? null : ResourceFile.Resources.FirstOrDefault(resource => resource.Crop.Contains(mousePosition));
         }
@@ -262,7 +260,7 @@ namespace ResourceMaker.Features.App
                 return;
             }
 
-            var res = new Resource.Resource
+            var res = new Resource
                           {
                               Name = "Unnamed",
                               Layer = "Default",
@@ -331,16 +329,11 @@ namespace ResourceMaker.Features.App
             set { _currentDirectory = value; NotifyOfPropertyChange(() => CurrentDirectory); }
         }
 
-        private ObservableCollection<Resource.Resource> _resourcesToRender;
-        public ObservableCollection<Resource.Resource> ResourcesToRender
+        private ObservableCollection<Resource> _resourcesToRender;
+        public ObservableCollection<Resource> ResourcesToRender
         {
             get { return _resourcesToRender; }
             set { _resourcesToRender = value; NotifyOfPropertyChange(() => ResourcesToRender); }
-        }
-
-        public void Handle(ColorEvent message)
-        {
-            Color = message.Color;
         }
     }
 }

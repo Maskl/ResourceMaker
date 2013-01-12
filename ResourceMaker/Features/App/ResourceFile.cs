@@ -2,11 +2,10 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
-using System.Windows;
 using System.Windows.Media;
-using ResourceMaker.Features.Resource;
+using Sklodowski.ResourceMaker.Features.ResourceWindow;
 
-namespace ResourceMaker
+namespace Sklodowski.ResourceMaker.Features.App
 {
     [DisplayName("Resource file")]
     public class ResourceFile

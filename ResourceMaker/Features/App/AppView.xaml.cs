@@ -1,4 +1,4 @@
-﻿namespace ResourceMaker.Features.App
+﻿namespace Sklodowski.ResourceMaker.Features.App
 {
     public partial class AppView
     {

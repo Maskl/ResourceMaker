@@ -1,12 +1,12 @@
-﻿<Application x:Class="ResourceMaker.App"
+﻿<Application x:Class="Sklodowski.ResourceMaker.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:app="clr-namespace:ResourceMaker.Features.App">
+             xmlns:resourceMaker="clr-namespace:Sklodowski.ResourceMaker">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
-                    <app:AppBootstrapper x:Key="bootstrapper" />
+                    <resourceMaker:AppBootstrapper x:Key="bootstrapper" />
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

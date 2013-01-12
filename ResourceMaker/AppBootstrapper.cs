@@ -5,8 +5,9 @@ using Caliburn.Micro;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
+using Sklodowski.ResourceMaker.Features.App;
 
-namespace ResourceMaker.Features.App
+namespace Sklodowski.ResourceMaker
 {
     public class AppBootstrapper : Bootstrapper<AppViewModel>
     {

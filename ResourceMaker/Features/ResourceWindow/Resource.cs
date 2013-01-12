@@ -5,7 +5,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Media;
 
-namespace ResourceMaker.Features.Resource
+namespace Sklodowski.ResourceMaker.Features.ResourceWindow
 {
     public class Resource
     {

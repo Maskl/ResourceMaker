@@ -8,7 +8,7 @@
     <ProjectGuid>{225AD6A4-1F18-443A-A1CD-CF7FB17F2F8D}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ResourceMaker</RootNamespace>
+    <RootNamespace>Sklodowski.ResourceMaker</RootNamespace>
     <AssemblyName>ResourceMaker</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
@@ -88,16 +88,15 @@
       <DependentUpon>AppView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\App\AppViewModel.cs" />
-    <Compile Include="ColorEvent.cs" />
     <Compile Include="Converters\IsNullToVisibilityConverter.cs" />
     <Compile Include="Extensions\Int32RectExtensionMethods.cs" />
     <Compile Include="Converters\LayerToColorConverter.cs" />
     <Compile Include="Features\App\ResourceFile.cs" />
-    <Compile Include="Features\Resource\Resource.cs" />
-    <Compile Include="Features\Resource\ResourceView.xaml.cs">
+    <Compile Include="Features\ResourceWindow\Resource.cs" />
+    <Compile Include="Features\ResourceWindow\ResourceView.xaml.cs">
       <DependentUpon>ResourceView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Features\Resource\ResourceViewModel.cs" />
+    <Compile Include="Features\ResourceWindow\ResourceViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -128,7 +127,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Features\Resource\ResourceView.xaml">
+    <Page Include="Features\ResourceWindow\ResourceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

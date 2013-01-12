@@ -4,9 +4,9 @@
         xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit.PropertyGrid;assembly=WPFToolkit.Extended"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
-        xmlns:Converters="clr-namespace:ResourceMaker" xmlns:converters="clr-namespace:ResourceMaker.Converters"
+        xmlns:converters="clr-namespace:Sklodowski.ResourceMaker.Converters"
         mc:Ignorable="d"
-        x:Class="ResourceMaker.Features.Resource.ResourceView"
+        x:Class="Sklodowski.ResourceMaker.Features.ResourceWindow.ResourceView"
         Title="Selected resource editor"
         Width="650"
         Height="400">

@@ -6,14 +6,14 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Caliburn.Micro;
 using System.Windows.Media;
+using Sklodowski.ResourceMaker.Extensions;
+using Sklodowski.ResourceMaker.Features.App;
 
-namespace ResourceMaker.Features.Resource
+namespace Sklodowski.ResourceMaker.Features.ResourceWindow
 {
     [Export(typeof(ResourceViewModel))]
     public class ResourceViewModel : PropertyChangedBase, IViewAware
     {
-        private readonly IEventAggregator _events;
-
         static CroppedBitmap CreateCroppedBitmapResolutionInvariant(Uri uri, Int32Rect crop)
         {
             var bitmap = new BitmapImage(uri);
@@ -32,19 +32,14 @@ namespace ResourceMaker.Features.Resource
         }
 
         [ImportingConstructor]
-        public ResourceViewModel(IEventAggregator events, Resource resource, ResourceFile resourceFile, string currentDirectory)
+        public ResourceViewModel(Resource resource, ResourceFile resourceFile, string currentDirectory)
         {
-            _events = events;
             Resource = resource;
             ResourceFile = resourceFile;
             CurrentDirectory = currentDirectory;
 
             ResourceBitmap = CreateCroppedBitmapResolutionInvariant(new Uri(CurrentDirectory + ResourceFile.BitmapFileName), resource.Crop);
-
         }
-
-
-
 
         public void DeleteResource()
         {
@@ -170,25 +165,6 @@ namespace ResourceMaker.Features.Resource
 
 
 
-
-
-
-
-
-
-        public void Red()
-        {
-        }
-
-        public void Green()
-        {
-            _events.Publish(new ColorEvent(new SolidColorBrush(Colors.Green)));
-        }
-
-        public void Blue()
-        {
-            _events.Publish(new ColorEvent(new SolidColorBrush(Colors.Blue)));
-        }
 
         private CroppedBitmap _resourceBitmap;
         public CroppedBitmap ResourceBitmap

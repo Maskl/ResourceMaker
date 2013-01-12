@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace ResourceMaker.Converters
+namespace Sklodowski.ResourceMaker.Converters
 {
     public class IsNullToVisibilityConverter : IValueConverter
     {

@@ -3,10 +3,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit.PropertyGrid;assembly=WPFToolkit.Extended"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro" xmlns:Converters="clr-namespace:ResourceMaker"
-        xmlns:converters="clr-namespace:ResourceMaker.Converters"
+        xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+        xmlns:converters="clr-namespace:Sklodowski.ResourceMaker.Converters"
         mc:Ignorable="d"
-        x:Class="ResourceMaker.Features.App.AppView"
+        x:Class="Sklodowski.ResourceMaker.Features.App.AppView"
         Title="Resource maker"
         Width="800"
         Height="500">
