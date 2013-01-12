@@ -5,7 +5,7 @@ using System.IO;
 using System.Windows.Media;
 using Sklodowski.ResourceMaker.Features.ResourceWindow;
 
-namespace Sklodowski.ResourceMaker.Features.App
+namespace Sklodowski.ResourceMaker.Features.ResourceFileWindow
 {
     [DisplayName("Resource file")]
     public class ResourceFile

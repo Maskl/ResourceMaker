@@ -12,7 +12,7 @@ using System.Windows.Media;
 using Sklodowski.ResourceMaker.Extensions;
 using Sklodowski.ResourceMaker.Features.ResourceWindow;
 
-namespace Sklodowski.ResourceMaker.Features.App
+namespace Sklodowski.ResourceMaker.Features.ResourceFileWindow
 {
     public class Filters
     {
@@ -20,13 +20,13 @@ namespace Sklodowski.ResourceMaker.Features.App
         public string Layer { get; set; }
     }
 
-    [Export(typeof(AppViewModel))]
-    public class AppViewModel : PropertyChangedBase
+    [Export(typeof(ResourceFileViewModel))]
+    public class ResourceFileViewModel : PropertyChangedBase
     {
         private readonly IWindowManager _windowManager;
 
         [ImportingConstructor]
-        public AppViewModel(IWindowManager windowManager)
+        public ResourceFileViewModel(IWindowManager windowManager)
         {
             _windowManager = windowManager;
             New();

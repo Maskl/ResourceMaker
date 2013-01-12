@@ -84,14 +84,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppBootstrapper.cs" />
-    <Compile Include="Features\App\AppView.xaml.cs">
-      <DependentUpon>AppView.xaml</DependentUpon>
+    <Compile Include="Features\ResourceFileWindow\ResourceFileView.xaml.cs">
+      <DependentUpon>ResourceFileView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Features\App\AppViewModel.cs" />
+    <Compile Include="Features\ResourceFileWindow\ResourceFileViewModel.cs" />
     <Compile Include="Converters\IsNullToVisibilityConverter.cs" />
     <Compile Include="Extensions\Int32RectExtensionMethods.cs" />
     <Compile Include="Converters\LayerToColorConverter.cs" />
-    <Compile Include="Features\App\ResourceFile.cs" />
+    <Compile Include="Features\ResourceFileWindow\ResourceFile.cs" />
     <Compile Include="Features\ResourceWindow\Resource.cs" />
     <Compile Include="Features\ResourceWindow\ResourceView.xaml.cs">
       <DependentUpon>ResourceView.xaml</DependentUpon>
@@ -123,7 +123,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Features\App\AppView.xaml">
+    <Page Include="Features\ResourceFileWindow\ResourceFileView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

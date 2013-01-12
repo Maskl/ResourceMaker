@@ -7,7 +7,7 @@ using System.Windows.Media.Imaging;
 using Caliburn.Micro;
 using System.Windows.Media;
 using Sklodowski.ResourceMaker.Extensions;
-using Sklodowski.ResourceMaker.Features.App;
+using Sklodowski.ResourceMaker.Features.ResourceFileWindow;
 
 namespace Sklodowski.ResourceMaker.Features.ResourceWindow
 {

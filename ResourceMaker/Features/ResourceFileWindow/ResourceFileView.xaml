@@ -6,7 +6,7 @@
         xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
         xmlns:converters="clr-namespace:Sklodowski.ResourceMaker.Converters"
         mc:Ignorable="d"
-        x:Class="Sklodowski.ResourceMaker.Features.App.AppView"
+        x:Class="Sklodowski.ResourceMaker.Features.ResourceFileWindow.ResourceFileView"
         Title="Resource maker"
         Width="800"
         Height="500">

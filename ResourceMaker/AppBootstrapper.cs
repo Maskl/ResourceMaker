@@ -5,11 +5,11 @@ using Caliburn.Micro;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
-using Sklodowski.ResourceMaker.Features.App;
+using Sklodowski.ResourceMaker.Features.ResourceFileWindow;
 
 namespace Sklodowski.ResourceMaker
 {
-    public class AppBootstrapper : Bootstrapper<AppViewModel>
+    public class AppBootstrapper : Bootstrapper<ResourceFileViewModel>
     {
         private CompositionContainer _container;
 
