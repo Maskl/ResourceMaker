@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Dynamic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -46,12 +47,13 @@ namespace ResourceMaker
 
         public void LoadBitmap()
         {
-            var fdialog = new Microsoft.Win32.OpenFileDialog();
-            var res = fdialog.ShowDialog();
+            var dialog = new Microsoft.Win32.OpenFileDialog();
+            dialog.Filter = "Image files (*.jpg, *.png, *.bmp, *.tga, *.gif) | *.jpg; *.png; *.bmp; *.tga; *.gif";
+            var res = dialog.ShowDialog();
             if (!res.Value)
                 return;
 
-            PrepareNewResourceFile(fdialog.FileName);
+            PrepareNewResourceFile(dialog.FileName);
         }
 
         public void PrepareNewResourceFile(string bitmapFileName)
@@ -59,11 +61,11 @@ namespace ResourceMaker
             var uri = new Uri(bitmapFileName);
             ResourcesBitmap = new BitmapImage(uri);
             IsNoBitmapLoaded = false;
-            CurrentDirectory = System.IO.Path.GetDirectoryName(uri.LocalPath) + System.IO.Path.AltDirectorySeparatorChar;
+            CurrentDirectory = Path.GetDirectoryName(uri.LocalPath) + Path.AltDirectorySeparatorChar;
 
             ResourceFile = new ResourceFile
                              {
-                                 BitmapFileName = System.IO.Path.GetFileName(uri.LocalPath),
+                                 BitmapFileName = Path.GetFileName(uri.LocalPath),
                                  TransparentColor = Colors.Magenta,
                                  HasTransparentColor = true,
                                  Resources = new ObservableCollection<Resource>()
@@ -108,27 +110,69 @@ namespace ResourceMaker
 
         public void Open()
         {
-            MessageBox.Show("Open");
-        }
+            var dialog = new Microsoft.Win32.OpenFileDialog();
+            dialog.Filter = "Resource files (*.resource) | *.resource";
+            var res = dialog.ShowDialog();
+            if (!res.Value)
+                return;
 
-        public bool CanSave()
-        {
-            return !IsNoBitmapLoaded;
+            // Reset current resource and bitmap.
+            New();
+
+            try
+            {
+                // Load resource data.
+                using (var stream = new FileStream(dialog.FileName, FileMode.Open))
+                {
+                    using (var reader = new BinaryReader(stream))
+                    {
+                        ResourceFile = ResourceFile.Load(reader);
+                        reader.Close();
+                    }
+                }
+
+                // Load bitmap.
+                var uri = new Uri(dialog.FileName);
+                CurrentDirectory = Path.GetDirectoryName(uri.LocalPath) + Path.AltDirectorySeparatorChar;
+                ResourcesBitmap = new BitmapImage(new Uri(CurrentDirectory + ResourceFile.BitmapFileName));
+                IsNoBitmapLoaded = false;
+                UpdateFilters();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Problem while opening resource file.");
+            }
         }
 
         public void Save()
         {
-            MessageBox.Show("Save");
-        }
+            if (IsNoBitmapLoaded)
+            {
+                MessageBox.Show("No bitmap loaded", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
-        public bool CanSaveAs()
-        {
-            return CanSave();
-        }
+            var dialog = new Microsoft.Win32.SaveFileDialog();
+            dialog.Filter = "Resource files (*.resource) | *.resource";
+            var res = dialog.ShowDialog();
+            if (!res.Value)
+                return;
 
-        public void SaveAs()
-        {
-            MessageBox.Show("Save as");
+            try
+            {
+                using (var stream = new FileStream(dialog.FileName, FileMode.Create))
+                {
+                    using (var writer = new BinaryWriter(stream))
+                    {
+                        ResourceFile.Save(writer);
+                        writer.Close();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Problem while saving resource file.");
+            }
         }
 
         public void Exit()

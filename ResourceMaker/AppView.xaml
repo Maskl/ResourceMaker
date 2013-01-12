@@ -156,8 +156,6 @@
                           Name="Open" />
                 <MenuItem Header="Save"
                           Name="Save" />
-                <MenuItem Header="SaveAs"
-                          Name="SaveAs" />
                 <MenuItem Header="Exit"
                           Name="Exit" />
             </MenuItem>
