@@ -2,7 +2,7 @@
 
 namespace Sklodowski.ResourceMaker.Extensions
 {
-    static class Int32RectExtensionMethods
+    static class Int32RectExtensions
     {
         public static bool Contains(this Int32Rect instance, Point point)
         {

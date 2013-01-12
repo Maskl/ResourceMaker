@@ -84,12 +84,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppBootstrapper.cs" />
+    <Compile Include="Extensions\BitmapImageExtensions.cs" />
     <Compile Include="Features\ResourceFileWindow\ResourceFileView.xaml.cs">
       <DependentUpon>ResourceFileView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\ResourceFileWindow\ResourceFileViewModel.cs" />
     <Compile Include="Converters\IsNullToVisibilityConverter.cs" />
-    <Compile Include="Extensions\Int32RectExtensionMethods.cs" />
+    <Compile Include="Extensions\Int32RectExtensions.cs" />
     <Compile Include="Converters\LayerToColorConverter.cs" />
     <Compile Include="Features\ResourceFileWindow\ResourceFile.cs" />
     <Compile Include="Features\ResourceWindow\Resource.cs" />

@@ -37,10 +37,10 @@ namespace Sklodowski.ResourceMaker.Features.ResourceWindow
         {
             writer.Write(Name);
             writer.Write(HasTransparentColor ? 1 : 0);
-            writer.Write(HasTransparentColor ? TransparentColor.R : 0);
-            writer.Write(HasTransparentColor ? TransparentColor.G : 0);
-            writer.Write(HasTransparentColor ? TransparentColor.B : 0);
-            writer.Write(HasTransparentColor ? TransparentColor.A : 0);
+            writer.Write((byte)(HasTransparentColor ? TransparentColor.R : 0));
+            writer.Write((byte)(HasTransparentColor ? TransparentColor.G : 0));
+            writer.Write((byte)(HasTransparentColor ? TransparentColor.B : 0));
+            writer.Write((byte)(HasTransparentColor ? TransparentColor.A : 0));
             writer.Write(Layer);
             writer.Write(Crop.X);
             writer.Write(Crop.Y);

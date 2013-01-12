@@ -14,35 +14,16 @@
         <Grid.Resources>
             <converters:IsNullToVisibilityConverter x:Key="IsNullToVisibilityConverter" />
         </Grid.Resources>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="300" />
         </Grid.ColumnDefinitions>
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition Height="50" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <xctk:PropertyGrid Grid.ColumnSpan="2"
-                               SelectedObject="{Binding Resource}"
-                               ShowSummary="False"
-                               ShowSearchBox="False"
-                               ShowSortOptions="False"
-                               VerticalContentAlignment="Stretch" />
-
-            <Button Grid.Row="1"
-                    Name="DeleteResource">Delete this resource</Button>
-            <Button Grid.Row="1"
-                    Grid.Column="1"
-                    Name="CloseWindow">OK</Button>
-        </Grid>
-
+        
+        <!-- Image -->
         <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto"
                       ScrollViewer.VerticalScrollBarVisibility="Auto">
+            
             <ScrollViewer.Background>
                 <ImageBrush ImageSource="../../data/background.png"
                             TileMode="Tile"
@@ -50,8 +31,11 @@
                             ViewportUnits="Absolute"
                             Viewport="0,0,16,16" />
             </ScrollViewer.Background>
+            
             <Canvas Width="{Binding Width, ElementName=ResourceBitmap}"
                     Height="{Binding Height, ElementName=ResourceBitmap}">
+                
+                <!-- Cropped resource bitmap -->
                 <Image Name="ResourceBitmap"
                        Width="{Binding RelativeSource={RelativeSource Self}, Path=Source.PixelWidth}"
                        Height="{Binding RelativeSource={RelativeSource Self}, Path=Source.PixelHeight}"
@@ -59,7 +43,8 @@
                                        [Event MouseUp] = [Action BitmapMouseUp($mousepoint)];
                                        [Event MouseMove] = [Action BitmapMouseMove($mousepoint)];
                                        [Event MouseLeave] = [Action BitmapMouseLeave($mousepoint)]" />
-
+                
+                <!-- New (temporary) forbidden area -->
                 <Border IsHitTestVisible="False"
                         Canvas.Left="{Binding NewForbiddenAreaTemporary.X}"
                         Canvas.Top="{Binding NewForbiddenAreaTemporary.Y}"
@@ -72,13 +57,16 @@
                         BorderBrush="#ffff0000"
                         Background="#33ff0000" />
 
+                <!-- All forbidden areas -->
                 <ItemsControl ItemsSource="{Binding Resource.ForbiddenAreas}"
                               Grid.Row="1">
+                    
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <Canvas />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
+                    
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Border IsHitTestVisible="False"
@@ -89,6 +77,7 @@
                                     Background="#33ff4444" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
+                    
                     <ItemsControl.ItemContainerStyle>
                         <Style>
                             <Setter Property="Canvas.Left"
@@ -100,5 +89,31 @@
                 </ItemsControl>
             </Canvas>
         </ScrollViewer>
+        
+        <!-- Property grid + buttons -->        
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            
+            <xctk:PropertyGrid Grid.ColumnSpan="2"
+                               SelectedObject="{Binding Resource}"
+                               ShowSummary="False"
+                               ShowSearchBox="False"
+                               ShowSortOptions="False"
+                               VerticalContentAlignment="Stretch" />
+
+            <Button Grid.Row="1"
+                    Name="DeleteResource">Delete this resource</Button>
+            
+            <Button Grid.Row="1"
+                    Grid.Column="1"
+                    Name="CloseWindow">OK</Button>
+        </Grid>
     </Grid>
 </Window>

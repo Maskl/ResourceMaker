@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Caliburn.Micro;
-using System.Windows.Media;
 using Sklodowski.ResourceMaker.Extensions;
 using Sklodowski.ResourceMaker.Features.ResourceFileWindow;
 
@@ -14,23 +13,6 @@ namespace Sklodowski.ResourceMaker.Features.ResourceWindow
     [Export(typeof(ResourceViewModel))]
     public class ResourceViewModel : PropertyChangedBase, IViewAware
     {
-        static CroppedBitmap CreateCroppedBitmapResolutionInvariant(Uri uri, Int32Rect crop)
-        {
-            var bitmap = new BitmapImage(uri);
-            var rect = new Rect(0, 0, bitmap.PixelWidth, bitmap.PixelHeight);
-            var drawingVisual = new DrawingVisual();
-            using (var drawingContext = drawingVisual.RenderOpen())
-            {
-                drawingContext.DrawImage(bitmap, rect);
-            }
-            var resizedImage = new RenderTargetBitmap(
-                (int)rect.Width, (int)rect.Height,
-                96, 96,
-                PixelFormats.Default);
-            resizedImage.Render(drawingVisual);
-            return new CroppedBitmap(resizedImage, crop);
-        }
-
         [ImportingConstructor]
         public ResourceViewModel(Resource resource, ResourceFile resourceFile, string currentDirectory)
         {
@@ -38,21 +20,13 @@ namespace Sklodowski.ResourceMaker.Features.ResourceWindow
             ResourceFile = resourceFile;
             CurrentDirectory = currentDirectory;
 
-            ResourceBitmap = CreateCroppedBitmapResolutionInvariant(new Uri(CurrentDirectory + ResourceFile.BitmapFileName), resource.Crop);
-        }
-
-        public void DeleteResource()
-        {
-            if (MessageBox.Show("Are you sure? (Action can not be undone)", "Delete a resource?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-            {
-                ResourceFile.Resources.Remove(Resource);
-                dialogWindow.Close();
-            }
+            var bitmapFull = new BitmapImage(new Uri(CurrentDirectory + ResourceFile.BitmapFileName));
+            ResourceBitmap = bitmapFull.CreateCroppedBitmapResolutionInvariant(resource.Crop);
         }
 
         public void CloseWindow()
         {
-            dialogWindow.Close();
+            _dialogWindow.Close();
         }
 
         public void BitmapMouseDown(Point mousePosition)
@@ -85,8 +59,6 @@ namespace Sklodowski.ResourceMaker.Features.ResourceWindow
                                    Math.Max(mousePosition.Y, NewForbiddenAreaStart.Value.Y));
 
                 NewForbiddenAreaTemporary = new Int32Rect((int)p1.X, (int)p1.Y, (int)(p2 - p1).X, (int)(p2 - p1).Y);
-
-
                 Mouse.OverrideCursor = (mousePosition.X < NewForbiddenAreaStart.Value.X) == (mousePosition.Y < NewForbiddenAreaStart.Value.Y) ? Cursors.SizeNWSE : Cursors.SizeNESW;
                 return;
             }
@@ -95,8 +67,8 @@ namespace Sklodowski.ResourceMaker.Features.ResourceWindow
             {
                 Mouse.OverrideCursor = Cursors.No;
                 return;
-
             }
+
             Mouse.OverrideCursor = Cursors.Cross;
         }
 
@@ -133,38 +105,14 @@ namespace Sklodowski.ResourceMaker.Features.ResourceWindow
             Resource.ForbiddenAreas.Add(rect);
         }
 
-        private bool _isNoBitmapLoaded;
-        public bool IsNoBitmapLoaded
+        public void DeleteResource()
         {
-            get { return _isNoBitmapLoaded; }
-            set { _isNoBitmapLoaded = value; NotifyOfPropertyChange(() => IsNoBitmapLoaded); }
+            if (MessageBox.Show("Are you sure? (Action can not be undone)", "Delete a resource?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                ResourceFile.Resources.Remove(Resource);
+                _dialogWindow.Close();
+            }
         }
-
-        private Point? _newForbiddenAreaStart;
-        public Point? NewForbiddenAreaStart
-        {
-            get { return _newForbiddenAreaStart; }
-            set { _newForbiddenAreaStart = value; NotifyOfPropertyChange(() => NewForbiddenAreaStart); }
-        }
-
-        private Int32Rect? _newForbiddenAreaTemporary;
-        public Int32Rect? NewForbiddenAreaTemporary
-        {
-            get { return _newForbiddenAreaTemporary; }
-            set { _newForbiddenAreaTemporary = value; NotifyOfPropertyChange(() => NewForbiddenAreaTemporary); }
-        }
-
-
-
-
-
-
-
-
-
-
-
-
 
         private CroppedBitmap _resourceBitmap;
         public CroppedBitmap ResourceBitmap
@@ -194,20 +142,38 @@ namespace Sklodowski.ResourceMaker.Features.ResourceWindow
             set { _currentDirectory = value; NotifyOfPropertyChange(() => CurrentDirectory); }
         }
 
-        private Window dialogWindow;
+        private bool _isNoBitmapLoaded;
+        public bool IsNoBitmapLoaded
+        {
+            get { return _isNoBitmapLoaded; }
+            set { _isNoBitmapLoaded = value; NotifyOfPropertyChange(() => IsNoBitmapLoaded); }
+        }
+
+        private Point? _newForbiddenAreaStart;
+        public Point? NewForbiddenAreaStart
+        {
+            get { return _newForbiddenAreaStart; }
+            set { _newForbiddenAreaStart = value; NotifyOfPropertyChange(() => NewForbiddenAreaStart); }
+        }
+
+        private Int32Rect? _newForbiddenAreaTemporary;
+        public Int32Rect? NewForbiddenAreaTemporary
+        {
+            get { return _newForbiddenAreaTemporary; }
+            set { _newForbiddenAreaTemporary = value; NotifyOfPropertyChange(() => NewForbiddenAreaTemporary); }
+        }
+
+        private Window _dialogWindow;
         public void AttachView(object view, object context = null)
         {
-            dialogWindow = view as Window;
+            _dialogWindow = view as Window;
             if (ViewAttached != null)
-            {
-                ViewAttached(this,
-                             new ViewAttachedEventArgs() {Context = context, View = view});
-            }
+                ViewAttached(this, new ViewAttachedEventArgs {Context = context, View = view});
         }
 
         public object GetView(object context = null)
         {
-            return dialogWindow;
+            return _dialogWindow;
         }
 
         public event EventHandler<ViewAttachedEventArgs> ViewAttached;
